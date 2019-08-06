@@ -1,0 +1,82 @@
+---
+title: "lab1_mindatos_dcc"
+author: '@saguerraty'
+date: "August 6, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(ggplot2)
+tipos<-read.table("https://users.dcc.uchile.cl/~hsarmien/mineria/datasets/accidentes_2010_2011.txt")
+```
+<h2> Pregunta 1 </h2>
+Pregunta 1 parte 1: ¿Cuáles son las dimensiones del dataset (filas, columnas)? (Recuerde adjuntar código).
+
+```{r pregunta 1 parte 1}
+paste0("el num de filas: ", nrow(tipos)," y el num de columnas: ", ncol(tipos))
+```
+
+Pregunta 1 parte 2: ¿Qué describe cada línea del dataset? (ejemplifique tomando el dato de la fila 100). No es necesario explicar cada columna, sino más bien una idea de lo que plantea cada fila en el dataset.
+
+La fila 100 quiere decir que en río hurtado el a;o 2011 no hubo accidentes del tipo atropello
+
+Pregunta1 parte 3: Filtre los datos y genera un dataframe en el cual se indique la cantidad de accidentes tipo ``Volcadura`` que hubo en el año ``2010`` en cada localidad.
+
+```{r pregunta 1 parte 3}
+volca= subset(tipos, tipos$TipoAccidente=="Volcadura" & tipos$Muestra=="Comunal" & tipos$Anio==2010)
+```
+
+<h3> Pregunta 1 parte 4: </h3> Filtre los datos para incluir sólo los accidentes ocurridos el año 2011. Genere un boxplot donde se indique la cantidad de accidentes categorizado por tipo de accidente. Este tipo de gráfico nos ayudará a entender como se distribuye los datos por cada tipo de accidentes. Es decir, podremos apreciar que tan dispersos o similares son los datos en todo el dataset. También, puede ser útil para observar valores atípicos o outliers en los datos. 
+
+```{r pregunta 1 parte 4, echo=FALSE}
+tipo2011=subset(tipos,tipos$Anio==2011)
+ggplot(tipo2011,aes(y=Cantidad,x=TipoAccidente))+geom_boxplot()
+
+```
+
+Pregunta 1 parte 5: ¿Qué otra forma de explorar los datos podría agregar? ¿Qué información adicional aporta? Adjunte código y breve explicación.
+
+<h2>Pregunta 2:</h2>
+```{r}
+afectados <- read.table("https://users.dcc.uchile.cl/~hsarmien/mineria/datasets/afectados_2010_2011.txt")
+```
+```{r, fig.height=12, fig.width=12, echo = F, warning= F, message= F}
+library(ggplot2)
+ggplot(data = afectados[afectados$Muestra == "Regional", ]) +
+  geom_bar(aes(x = Descripcion, y = Cantidad), stat = "identity") + 
+  facet_grid(Estado ~ Anio) +
+  coord_flip() +
+  xlab("Comuna") + 
+  ylab("Cantidad")   
+
+```
+No es razonable comparar en términos nominales la canitdad de accidentes eque muestra el gráfico ya que la población de referencia y características endógenas de las regiones donde ocurren los accidentes. Una forma más representativa de mostrar la tasa de accidentes es hacerlo con una tasa mediante el porcentaje de accidentes en relación a la población de cada región.
+
+<h2> Pregunta 3</h2>
+<h3> Parte 1</h3>
+```{r pregunta 3 parte 1}
+poblacion <- read.table("https://users.dcc.uchile.cl/~hsarmien/mineria/datasets/demografico.txt", header=T)
+```
+1. Explique brevemente qué datos muestran los nuevos dataframes generados: `muertosPorComuna`, `tiposPorComuna` y `accidentesPorComuna`.
+2. Ordene cada uno de los datasets `muertosPorComuna` y `cruceAccidentes` por el nombre de la comuna (Descripcion). Hint: Use ```order```.
+```{r echo=FALSE}
+muertosPorComuna <- with(afectados, afectados[Muestra == "Comunal" & Estado == "Muertos" & Anio == 2011, ])
+
+tiposPorComuna <- with(tipos, tipos[Muestra == "Comunal" & Anio == 2011, ])
+
+accidentesPorComuna <- aggregate(Cantidad ~ Descripcion, tiposPorComuna, FUN=sum)
+
+cruceAccidentes <- merge(accidentesPorComuna, poblacion, by="Descripcion")
+```
+
+
+```{r pregunta 3 parte 2}
+muertosPorComuna <-muertosPorComuna[order(muertosPorComuna$Descripcion),]
+cruceAccidentes<-cruceAccidentes[order(cruceAccidentes$Descripcion),]
+```
+ Genere un nuevo dataframe que contenga el nombre de la comuna y la _cantidad de muertes por cualquier tipo de accidente de tránsito_ por cada diez mil habitantes en cada una de las comunas. Este último valor lo puede generar mediante la siguiente fórmula:
+```{r, eval=F}
+MuertesPorAccidente = 10000 * muertosPorComuna$Cantidad / (cruceAccidentes$Cantidad * cruceAccidentes$Poblacion + 1)
+```
