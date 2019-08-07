@@ -15,12 +15,12 @@ tipos<-read.table("https://users.dcc.uchile.cl/~hsarmien/mineria/datasets/accide
 Pregunta 1 parte 1: ¿Cuáles son las dimensiones del dataset (filas, columnas)? (Recuerde adjuntar código).
 
 ```{r pregunta 1 parte 1}
-paste0("el num de filas: ", nrow(tipos)," y el num de columnas: ", ncol(tipos))
+paste0("el n° de filas: ", nrow(tipos)," y el n° de columnas: ", ncol(tipos))
 ```
 
 Pregunta 1 parte 2: ¿Qué describe cada línea del dataset? (ejemplifique tomando el dato de la fila 100). No es necesario explicar cada columna, sino más bien una idea de lo que plantea cada fila en el dataset.
 
-La fila 100 quiere decir que en río hurtado el a;o 2011 no hubo accidentes del tipo atropello
+La fila 100 quiere decir que en río hurtado el año 2011 no hubo accidentes del tipo atropello
 
 Pregunta1 parte 3: Filtre los datos y genera un dataframe en el cual se indique la cantidad de accidentes tipo ``Volcadura`` que hubo en el año ``2010`` en cada localidad.
 
