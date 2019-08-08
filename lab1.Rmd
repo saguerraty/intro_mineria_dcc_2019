@@ -70,7 +70,6 @@ No es razonable comparar en términos nominales la cantidad de accidentes que mu
 ```
 
 <h2> Pregunta 3</h2>
-<h3> Parte 1</h3>
 ```{r pregunta 3 parte 1}
 poblacion <- read.table("https://users.dcc.uchile.cl/~hsarmien/mineria/datasets/demografico.txt", header=T)
 ```
@@ -99,7 +98,12 @@ muertosPorComuna <-muertosPorComuna[order(muertosPorComuna$Descripcion),]
 cruceAccidentes<-cruceAccidentes[order(cruceAccidentes$Descripcion),]
 ```
 
- Genere un nuevo dataframe que contenga el nombre de la comuna y la _cantidad de muertes por cualquier tipo de accidente de tránsito_ por cada diez mil habitantes en cada una de las comunas. Este último valor lo puede generar mediante la siguiente fórmula:
+3. Genere un nuevo dataframe que contenga el nombre de la comuna y la _cantidad de muertes por cualquier tipo de accidente de tránsito_ por cada diez mil habitantes en cada una de las comunas. Este último valor lo puede generar mediante la siguiente fórmula:
 ```{r, eval=F}
 MuertesPorAccidente = 10000 * muertosPorComuna$Cantidad / (cruceAccidentes$Cantidad * cruceAccidentes$Poblacion + 1)
+```
+
+4.Según los datos obtenidos, genere un gráfico de barras con las top 10 comunas con mayor tasa de muertes por accidente de tránsito. _Hint: para ordenar los datos en un gráfico de barras, en ggplot use `aes(x=reorder(Descripcion, muertesPorAccidente), y=muertesPorAccidente))`. _
+```{r p3 parte 4}
+ggplot(MuertesPorAccidente,aes())
 ```
