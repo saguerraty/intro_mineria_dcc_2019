@@ -95,9 +95,8 @@ top_n(mas_concetpto,10,mas_concetpto)
 ```
 
 
- 5. Ejecute el  siguiente cÃ³digo que permitirÃ¡ agregar una nueva columna a nuestro dataframe que solo tendrÃ¡ el nombre de la regiÃ³n.
- ```{r, message = F, warning=F}
-library(dplyr)
+ 5. Ejecute el  siguiente código que permitirá agregar una nueva columna a nuestro dataframe que solo tendrá el nombre de la región.
+```{r, message = F, warning=F}
 regiones <- strsplit(as.character(data_tf[,1]), '/')
 data_tf$region <- sapply(regiones, "[[", 1)
 data_tf <- data_tf %>% select(localidad, region, everything())
@@ -109,5 +108,9 @@ Luego, mediante un gráficos de barras (ggplot), muestre los top 10 conceptos m�
 - `Los Rios`
 - `Metropolitana de Santiago`
 
+```{r}
 
-6. De la pregunta anterior, Â¿considera que es razonable usar el conteo de frecuencias para determinar las regiones que tuvieron mayor participación en el proceso? Â¿Por quÃ©? Sugiera y solamente comente una forma distinta de hacerlo.
+```
+
+
+6. De la pregunta anterior, ¿considera que es razonable usar el conteo de frecuencias para determinar las regiones que tuvieron mayor participación en el proceso? ¿Por qué? Sugiera y solamente comente una forma distinta de hacerlo.
