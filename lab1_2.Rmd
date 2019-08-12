@@ -92,7 +92,6 @@ mas_participacion[,1]
 names(head(sort(colSums(data_tf[2:113]), decreasing = FALSE), 10))
 ```
 
-```
 
  5. Ejecute el  siguiente código que permitirá agregar una nueva columna a nuestro dataframe que solo tendrá el nombre de la región.
 ```{r, message = F, warning=F}
@@ -108,6 +107,11 @@ Luego, mediante un gráficos de barras (ggplot), muestre los top 10 conceptos m�
 - `Metropolitana de Santiago`
 
 ```{r}
+library(ggplot2)
+library(sqldf)
+regiones_top=subset(data_tf,data_tf$region=='Atacama' | data_tf$region=='Los Rios' | data_tf$region=='Metropolitana de Santiago')
+regiones_top<-aggregate(regiones_top[,c(2:115)],by=, FUN = sum)
+# ggplot(data = data_tf[which(data_tf$region==Atacama),])
 
 ```
 
