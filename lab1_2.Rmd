@@ -83,7 +83,9 @@ mas_patriota<- mas_patriota[,c(1,85)]
 
 
  4. Liste los 10 conceptos menos mencionados a lo largo de todo el proceso.
-
+```{r}
+names(head(sort(colSums(data_tf[2:113]), decreasing = FALSE), 10))
+```
 
  5. Ejecute el  siguiente cÃ³digo que permitirÃ¡ agregar una nueva columna a nuestro dataframe que solo tendrÃ¡ el nombre de la regiÃ³n.
  ```{r, message = F, warning=F}
