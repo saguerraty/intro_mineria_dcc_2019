@@ -108,7 +108,8 @@ Luego, mediante un gr√°ficos de barras (ggplot), muestre los top 10 conceptos m√
 - `Metropolitana de Santiago`
 
 ```{r}
-
+regiones_data <-data_tf[2:115]
+grouped_region = aggregate(regiones_data[2:113], by=list(region=regiones_data$region), FUN=sum)
 ```
 
 
