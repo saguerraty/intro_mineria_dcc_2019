@@ -6,19 +6,20 @@ output: html_document
 ---
 # Instrucciones
 
-1. Trabaje en equipos de dos personas. Salvo excepciones, no se corregirÃ¡ entregas con menos de dos integrantes.
+1. Trabaje en equipos de dos personas. Salvo excepciones, no se corregirá entregas con menos de dos integrantes.
 
 2. Modifique este archivo `.Rmd` agregando sus respuestas donde corresponda.
 
-3. Para cada pregunta, cuando corresponda, **incluya el cÃ³digo fuente que utilizÃ³ para llegar a su respuesta**.
+3. Para cada pregunta, cuando corresponda, **incluya el código fuente que utilizó para llegar a su respuesta**.
 
 4. Al final de la clase, **genere un archivo HTML usando RStudio** y sÃºbalo a U-Cursos.
-   Basta con que uno de los integrantes haga la entrega. Si ambos hacen una entrega en U-Cursos, se revisarÃ¡ cualquiera de Ã©stas.
+   Basta con que uno de los integrantes haga la entrega. Si ambos hacen una entrega en U-Cursos, se revisará cualquiera de Ã©stas.
 
 
 # Laboratorio
 
-En esta sesión trabajaremos con los datos del Proceso Constituyente 2016-2017 publicados en el Portal de Datos Abiertos del Gobierno de Chile. Los datos corresponden a las actas de los Encuentros Locales Autoconvocados (ELAs), en cada cual, un grupo de personas se reune a discutir distintos conceptos como por ejemplo; salud, educaciÃ³n, seguridad, etc.
+
+En esta sesión trabajaremos con los datos del Proceso Constituyente 2016-2017 publicados en el Portal de Datos Abiertos del Gobierno de Chile. Los datos corresponden a las actas de los Encuentros Locales Autoconvocados (ELAs), en cada cual, un grupo de personas se reune a discutir distintos conceptos como por ejemplo; salud, educación, seguridad, etc.
 
 Los datos con que trabajaremos consisten en la cantidad de veces que cada concepto constitucional fue mencionado por cada localidad de Chile. 
 
@@ -29,24 +30,43 @@ library(dplyr)
 data_tf <- read.csv("http://dcc.uchile.cl/~hsarmien/mineria/datasets/actas.txt", header = T)
 ```
 
-**Por cada pregunta adjunte el código R que utiliza para llegar a la respuesta. Respuestas sin código no serín evaluadas**
+
+**Por cada pregunta adjunte el código R que utilizó para llegar a la respuesta. Respuestas sin código no serán evaluadas**
 
 ## 1. Exploración básica
 
-1. ¿Cuáles son las dimensiones del dataset (filas, columnas)? Adjunte código o indique caimo determinar la cantidad de datos total. 
+1. ¿Cuáles son las dimensiones del dataset (filas, columnas)? Adjunte código o indique cómo determinó la cantidad de datos total. 
+
 ```{r }
 # RESPUESTA
-
+paste0("El n° de filas: ", nrow(data_tf)," y el n° de columnas: ", ncol(data_tf))
 ```
 
-2. Â¿QuÃ© describe cada lÃ�nea del dataset? (ejemplifique tomando el dato de la fila 20)
+2. ¿Qué describe cada línea del dataset? (ejemplifique tomando el dato de la fila 20)
 
-3. Â¿Existen localidades repetidas en el dataset? Adjunte el cÃ³digo o indique cÃ³mo llegÃ³ a esa conclusiÃ³n. 
+```
+Respuesta:
+La fila 20 escribe los temas tratados en la localidad de General Lagos, Parinacota, Arica y Parinacota,
+mostrando la cantidad de veces que aparece cada uno de los temas listados en el acta.
+```
 
-4. Liste los nombres de las columnas del dataset `data_tf`. Adjunte cÃ³digo en R y recuerde que si el resultado es muy largo emplee `head`. 
+3. ¿Existen localidades repetidas en el dataset? Adjunte el código o indique cómo llegó a esa conclusión.
+
+```{r}
+# No existen localidades repetidas
+localidades = data_tf[,1]
+duplicated(localidades)
+```
+
+4. Liste los nombres de las columnas del dataset `data_tf`. Adjunte código en R y recuerde que si el resultado es muy largo emplee `head`. 
+
+```{r}
+names(data_tf)
+```
 
 
 ## 2. Análisis
+
 
  1. Liste todas las localidades donde *no* se discutiÃ³ el concepto `a_la_salud`.
 ```{r}
@@ -66,6 +86,7 @@ mas_participacion=top_n(data_tf,10,participacion_total)
 mas_participacion[,1]
 ```
 
+
  4. Liste los 10 conceptos menos mencionados a lo largo de todo el proceso.
 ```{r}
 mas_concetpto=colSums(data_tf[,c(2:113),])
@@ -73,18 +94,25 @@ mas_concetpto=as.data.frame(cbind(row.names(mas_concetpto),mas_concetpto))
 top_n(mas_concetpto,10,mas_concetpto)
 ```
 
+<<<<<<< HEAD
  5. Ejecute el  siguiente código que permitirá agregar una nueva columna a nuestro dataframe que solo tendrá el nombre de la región.
 ```{r, message = F, warning=F}
+=======
+
+ 5. Ejecute el  siguiente cÃ³digo que permitirÃ¡ agregar una nueva columna a nuestro dataframe que solo tendrÃ¡ el nombre de la regiÃ³n.
+ ```{r, message = F, warning=F}
+library(dplyr)
+>>>>>>> cbecb8199ea7f541bc6b84083b486f26798d1b5d
 regiones <- strsplit(as.character(data_tf[,1]), '/')
 data_tf$region <- sapply(regiones, "[[", 1)
 data_tf <- data_tf %>% select(localidad, region, everything())
 ```
 
-Luego, mediante un grÃ¡ficos de barras (ggplot), muestre los top 10 conceptos mÃ¡s mencionados en cada una de las siguientes regiones (adjunte grÃ¡ficos y cÃ³digo):
+Luego, mediante un gráficos de barras (ggplot), muestre los top 10 conceptos más mencionados en cada una de las siguientes regiones (adjunte gráficos y código):
 
 - `Atacama`
 - `Los Rios`
 - `Metropolitana de Santiago`
 
 
-6. De la pregunta anterior, Â¿considera que es razonable usar el conteo de frecuencias para determinar las regiones que tuvieron mayor participaciÃ³n en el proceso? Â¿Por quÃ©? Sugiera y solamente comente una forma distinta de hacerlo.
+6. De la pregunta anterior, Â¿considera que es razonable usar el conteo de frecuencias para determinar las regiones que tuvieron mayor participación en el proceso? Â¿Por quÃ©? Sugiera y solamente comente una forma distinta de hacerlo.
