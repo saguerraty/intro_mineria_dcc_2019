@@ -94,15 +94,10 @@ mas_concetpto=as.data.frame(cbind(row.names(mas_concetpto),mas_concetpto))
 top_n(mas_concetpto,10,mas_concetpto)
 ```
 
-<<<<<<< HEAD
- 5. Ejecute el  siguiente código que permitirá agregar una nueva columna a nuestro dataframe que solo tendrá el nombre de la región.
-```{r, message = F, warning=F}
-=======
 
  5. Ejecute el  siguiente cÃ³digo que permitirÃ¡ agregar una nueva columna a nuestro dataframe que solo tendrÃ¡ el nombre de la regiÃ³n.
  ```{r, message = F, warning=F}
 library(dplyr)
->>>>>>> cbecb8199ea7f541bc6b84083b486f26798d1b5d
 regiones <- strsplit(as.character(data_tf[,1]), '/')
 data_tf$region <- sapply(regiones, "[[", 1)
 data_tf <- data_tf %>% select(localidad, region, everything())
