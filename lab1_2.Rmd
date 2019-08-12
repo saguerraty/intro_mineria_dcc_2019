@@ -106,12 +106,41 @@ Luego, mediante un gr√°ficos de barras (ggplot), muestre los top 10 conceptos m√
 - `Los Rios`
 - `Metropolitana de Santiago`
 
-```{r}
+```{r, echo=FALSE}
 library(ggplot2)
 library(sqldf)
+library(gridExtra)
 
 regiones_data <-data_tf[2:115]
 grouped_region = aggregate(regiones_data[2:113], by=list(region=regiones_data$region), FUN=sum)
+grouped_region<-grouped_region[which(grouped_region$region=='Atacama' | grouped_region$region=='Los Rios' | grouped_region$region=='Metropolitana de Santiago'),]
+tregion=as.data.frame(t(as.matrix(grouped_region)))
+colnames(tregion)=c('Atacama','Los Rios','Metropolitana de Santiago')
+tregion<-tregion[-1,]
+rm(grouped_region)
+tregion<-cbind(rownames(tregion),tregion)
+colnames(tregion)[1]<-"tema"
+tregion$Atacama<-as.numeric(tregion$Atacama)
+tregion$`Los Rios`<-as.numeric(tregion$`Los Rios`)
+tregion$`Metropolitana de Santiago`<-as.numeric(tregion$`Metropolitana de Santiago`)
+tregion<-transform(tregion,tema=reorder(tema,-Atacama))
+
+atacama=tregion %>%
+  arrange(desc(Atacama)) %>%
+  slice(1:10) %>%
+  ggplot(.,aes(reorder(tema,-Atacama),Atacama))+geom_bar(stat = "identity")+theme(legend.position = "none")+xlab("Atacama")+coord_flip()
+
+lrios=tregion %>%
+  arrange(desc(Los.Rios)) %>%
+  slice(1:10) %>%
+  ggplot(.,aes(reorder(tema,Los.Rios),Los.Rios))+geom_bar(stat = "identity")+theme(legend.position = "none")+xlab("Los Rios")+coord_flip()
+metro=tregion %>%
+  arrange(desc(Metropolitana.de.Santiago)) %>%
+  slice(1:10) %>%
+  ggplot(.,aes(reorder(tema,Metropolitana.de.Santiago),Metropolitana.de.Santiago))+geom_bar(stat = "identity")+theme(legend.position = "none")+xlab("Region metropolitana")+coord_flip()
+
+grid.arrange(atacama,lrios,metro, nrow=3)
+
 ```
 
 
