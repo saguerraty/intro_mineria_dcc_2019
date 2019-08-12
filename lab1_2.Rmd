@@ -89,11 +89,10 @@ mas_participacion[,1]
 
  4. Liste los 10 conceptos menos mencionados a lo largo de todo el proceso.
 ```{r}
-mas_concetpto=colSums(data_tf[,c(2:113),])
-mas_concetpto=as.data.frame(cbind(row.names(mas_concetpto),mas_concetpto))
-top_n(mas_concetpto,10,mas_concetpto)
+names(head(sort(colSums(data_tf[2:113]), decreasing = FALSE), 10))
 ```
 
+```
 
  5. Ejecute el  siguiente código que permitirá agregar una nueva columna a nuestro dataframe que solo tendrá el nombre de la región.
 ```{r, message = F, warning=F}
