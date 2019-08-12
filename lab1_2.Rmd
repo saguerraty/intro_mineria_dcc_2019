@@ -45,14 +45,15 @@ paste0("El n° de filas: ", nrow(data_tf)," y el n° de columnas: ", ncol(data_t
 2. ¿Qué describe cada línea del dataset? (ejemplifique tomando el dato de la fila 20)
 
 ```
-Describe los temas tratados en General Lagos, Parinacota, Arica y Parinacota,
-mostrando la cantidad de veces que se hace mención a un tema
+Respuesta:
+La fila 20 escribe los temas tratados en la localidad de General Lagos, Parinacota, Arica y Parinacota,
+mostrando la cantidad de veces que aparece cada uno de los temas listados en el acta.
 ```
 
 3. ¿Existen localidades repetidas en el dataset? Adjunte el código o indique cómo llegó a esa conclusión.
 
 ```{r}
-# No
+# No existen localidades repetidas
 localidades = data_tf[,1]
 duplicated(localidades)
 ```
