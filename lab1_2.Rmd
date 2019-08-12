@@ -18,21 +18,25 @@ output: html_document
 
 # Laboratorio
 
+
 En esta sesión trabajaremos con los datos del Proceso Constituyente 2016-2017 publicados en el Portal de Datos Abiertos del Gobierno de Chile. Los datos corresponden a las actas de los Encuentros Locales Autoconvocados (ELAs), en cada cual, un grupo de personas se reune a discutir distintos conceptos como por ejemplo; salud, educación, seguridad, etc.
 
 Los datos con que trabajaremos consisten en la cantidad de veces que cada concepto constitucional fue mencionado por cada localidad de Chile. 
 
 Para cargar los datos, use:
 
-```{r}
+```{r, echo=FALSE}
+library(dplyr)
 data_tf <- read.csv("http://dcc.uchile.cl/~hsarmien/mineria/datasets/actas.txt", header = T)
 ```
+
 
 **Por cada pregunta adjunte el código R que utilizó para llegar a la respuesta. Respuestas sin código no serán evaluadas**
 
 ## 1. Exploración básica
 
 1. ¿Cuáles son las dimensiones del dataset (filas, columnas)? Adjunte código o indique cómo determinó la cantidad de datos total. 
+
 ```{r }
 # RESPUESTA
 paste0("El n° de filas: ", nrow(data_tf)," y el n° de columnas: ", ncol(data_tf))
@@ -62,16 +66,26 @@ names(data_tf)
 
 ## 2. Análisis
 
-1. Liste todas las localidades donde *no* se discutió el concepto `a_la_salud`.
 
-2. Liste las 10 localidades que más mencionaron el concepto `patriotismo`. 
+ 1. Liste todas las localidades donde *no* se discutiÃ³ el concepto `a_la_salud`.
+```{r}
+data_tf[which(data_tf$a_la_salud == 0),1]
+```
 
-3. Liste las 10 localidades que más participaron en el proceso. Describa cómo definió su medida de participación.
+ 2. Liste las 10 localidades que más mencionaron el concepto `patriotismo`.
+```{r}
+mas_patriota=top_n(data_tf,10,patriotismo)
+mas_patriota<- mas_patriota[,c(1,85)]
+```
 
-4. Liste los 10 conceptos menos mencionados a lo largo de todo el proceso.
+ 3. Liste las 10 localidades que mÃ¡s participaron en el proceso. Describa cÃ³mo definiÃ³ su medida de participaciÃ³n.
 
-5. Ejecute el  siguiente código que permitirá agregar una nueva columna a nuestro dataframe que solo tendrá el nombre de la región.
-```{r, message = F, warning=F}
+
+ 4. Liste los 10 conceptos menos mencionados a lo largo de todo el proceso.
+
+
+ 5. Ejecute el  siguiente cÃ³digo que permitirÃ¡ agregar una nueva columna a nuestro dataframe que solo tendrÃ¡ el nombre de la regiÃ³n.
+ ```{r, message = F, warning=F}
 library(dplyr)
 regiones <- strsplit(as.character(data_tf[,1]), '/')
 data_tf$region <- sapply(regiones, "[[", 1)
