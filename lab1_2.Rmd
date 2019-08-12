@@ -79,12 +79,19 @@ mas_patriota=top_n(data_tf,10,patriotismo)
 mas_patriota<- mas_patriota[,c(1,85)]
 ```
 
- 3. Liste las 10 localidades que mÃ¡s participaron en el proceso. Describa cÃ³mo definiÃ³ su medida de participaciÃ³n.
+ 3. Liste las 10 localidades que más participaron en el proceso. Describa camo definió su medida de participación.
+```{r}
+data_tf$participacion_total=rowSums(data_tf[,c(2:113)])
+mas_participacion=top_n(data_tf,10,participacion_total)
+mas_participacion[,1]
+```
 
 
  4. Liste los 10 conceptos menos mencionados a lo largo de todo el proceso.
 ```{r}
 names(head(sort(colSums(data_tf[2:113]), decreasing = FALSE), 10))
+```
+
 ```
 
  5. Ejecute el  siguiente cÃ³digo que permitirÃ¡ agregar una nueva columna a nuestro dataframe que solo tendrÃ¡ el nombre de la regiÃ³n.
