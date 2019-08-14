@@ -146,4 +146,5 @@ grid.arrange(atacama,lrios,metro, nrow=3)
 
 6. De la pregunta anterior, ¿considera que es razonable usar el conteo de frecuencias para determinar las regiones que tuvieron mayor participación en el proceso? ¿Por qué? Sugiera y solamente comente una forma distinta de hacerlo.
 
-Dentro de la información disponible en los dataframes es razonable, pero dificilmente es un buen indicador porque no informa apropiadamente cuanto se trató un tema sino cuantas veces fue mencionado, entonces si alguien relacionó todo con `republica`, entonces pareciera que trataron mucho eso cuando no es el caso.
+No puesto que el conteo de frecuencias no se puede utilizar como metrica sobre la participación, ya que una persona podría haber dicho todo, o ser un grupo pequeño que habló mucho.
+
