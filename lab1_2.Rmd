@@ -12,8 +12,8 @@ output: html_document
 
 3. Para cada pregunta, cuando corresponda, **incluya el código fuente que utilizó para llegar a su respuesta**.
 
-4. Al final de la clase, **genere un archivo HTML usando RStudio** y sÃºbalo a U-Cursos.
-   Basta con que uno de los integrantes haga la entrega. Si ambos hacen una entrega en U-Cursos, se revisará cualquiera de Ã©stas.
+4. Al final de la clase, **genere un archivo HTML usando RStudio** y súbalo a U-Cursos.
+   Basta con que uno de los integrantes haga la entrega. Si ambos hacen una entrega en U-Cursos, se revisará cualquiera de éstas.
 
 
 # Laboratorio
@@ -25,7 +25,7 @@ Los datos con que trabajaremos consisten en la cantidad de veces que cada concep
 
 Para cargar los datos, use:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 library(dplyr)
 data_tf <- read.csv("http://dcc.uchile.cl/~hsarmien/mineria/datasets/actas.txt", header = T)
 ```
@@ -37,7 +37,7 @@ data_tf <- read.csv("http://dcc.uchile.cl/~hsarmien/mineria/datasets/actas.txt",
 
 1. ¿Cuáles son las dimensiones del dataset (filas, columnas)? Adjunte código o indique cómo determinó la cantidad de datos total. 
 
-```{r }
+```{r , echo=FALSE}
 # RESPUESTA
 paste0("El n° de filas: ", nrow(data_tf)," y el n° de columnas: ", ncol(data_tf))
 ```
@@ -55,38 +55,38 @@ mostrando la cantidad de veces que aparece cada uno de los temas listados en el 
 ```{r}
 # No existen localidades repetidas
 localidades = data_tf[,1]
-duplicated(localidades)
+all(duplicated(localidades) ==FALSE)
 ```
 
 4. Liste los nombres de las columnas del dataset `data_tf`. Adjunte código en R y recuerde que si el resultado es muy largo emplee `head`. 
 
 ```{r}
-names(data_tf)
+head(names(data_tf),20)
 ```
 
 
 ## 2. Análisis
 
 
- 1. Liste todas las localidades donde *no* se discutiÃ³ el concepto `a_la_salud`.
-```{r}
+ 1. Liste todas las localidades donde *no* se discutió el concepto `a_la_salud`.
+```{r, echo=FALSE}
 data_tf[which(data_tf$a_la_salud == 0),1]
 ```
 
  2. Liste las 10 localidades que más mencionaron el concepto `patriotismo`.
-```{r}
+```{r, echo=FALSE}
 mas_patriota=top_n(data_tf,10,patriotismo)
 mas_patriota<- mas_patriota[,c(1,85)]
 mas_patriota[,1]
 ```
 
  3. Liste las 10 localidades que más participaron en el proceso. Describa camo definió su medida de participación.
-```{r}
+```{r, echo=FALSE}
 data_tf$participacion_total=rowSums(data_tf[,c(2:113)])
 mas_participacion=top_n(data_tf,10,participacion_total)
 mas_participacion[,1]
 ```
-
+La métrica de participación se estableció como el la cuenta del número de ocurrencias que tiene un concepto
 
  4. Liste los 10 conceptos menos mencionados a lo largo de todo el proceso.
 ```{r}
@@ -106,7 +106,7 @@ Luego, mediante un gráficos de barras (ggplot), muestre los top 10 conceptos m�
 - `Los Rios`
 - `Metropolitana de Santiago`
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 library(ggplot2)
 library(sqldf)
 library(gridExtra)
@@ -146,4 +146,6 @@ grid.arrange(atacama,lrios,metro, nrow=3)
 
 6. De la pregunta anterior, ¿considera que es razonable usar el conteo de frecuencias para determinar las regiones que tuvieron mayor participación en el proceso? ¿Por qué? Sugiera y solamente comente una forma distinta de hacerlo.
 
-Dentro de la información disponible en los dataframes es razonable, pero dificilmente es un buen indicador porque no informa apropiadamente cuanto se trató un tema sino cuantas veces fue mencionado, entonces si alguien relacionó todo con `republica`, entonces pareciera que trataron mucho eso cuando no es el caso.
+No es posible medir participación en términos de personas opinando ya que no se tienen los estadísticos descriptivos asociados a las actas a priori, adicionalmente se debería obtener las características de los participantes para poder identificar sesgos en la participación para que esta pueda ser representativa de la población. Es decir dos personas altamente motivadas podrían tratat la totalidad de los temas y registrar la misma participación que un participante por tema donde cada uno aborda un tema sin repetición, lo que claramente no es equivalente en términos de representatividad.
+En el escenario donde no se puede hacer las mediciones de manrea correcta nuevamente, una forma de aproximar la representatividad de las actas sería cruzar los temas tratados con las características demograficas de cada región para intentar extrapolar los posibles sesgos que puede haber tenido cada discusión, preferiblemente respaldado por algún número relativo a la asistencia y sus caracteristicas de las sessiones a las que hacen referencia las actas.
+
