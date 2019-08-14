@@ -144,7 +144,7 @@ grid.arrange(atacama,lrios,metro, nrow=3)
 ```
 
 
-6. De la pregunta anterior, ¿considera que es razonable usar el conteo de frecuencias para determinar las regiones que tuvieron mayor participación en el proceso? ¿Por qué? Sugiera y solamente comente una forma distinta de hacerlo.
+6. De la pregunta anterior, ¿considera que es razonable usar el conteo de frecuencias para determinar las regiones que tuvieron mayor participacion en el proceso? ¿Por que? Sugiera y solamente comente una forma distinta de hacerlo.
 
-No puesto que el conteo de frecuencias no se puede utilizar como metrica sobre la participación, ya que una persona podría haber dicho todo, o ser un grupo pequeño que habló mucho.
+No, puesto que el conteo de frecuencias no se puede utilizar como metrica sobre la participacion, ya que una persona podria haber dicho todo, o ser un grupo pequeño que hablo mucho. Sin incluir datos estadisticos descriptivos de participación en especifico dificilmente se tenga una buena metrica de participacion.
 
