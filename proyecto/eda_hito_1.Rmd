@@ -11,12 +11,25 @@ knitr::opts_chunk$set(echo = TRUE)
 library(readr)
 library(ggplot2)
 library(stats)
+library(purrr)
+library(tidyr)
+library(psych)
+library(corrplot)
 ```
 
 
 ```{r, echo=FALSE, message=FALSE}
 #lectura de datos
 datos=read_csv("./datosConClimaClean2.csv")
+datos$date=paste0(datos$dia,'/',datos$mes,'/',datos$anno)
+datos$date<-as.POSIXlt(datos$date, format = "%d/%m/%Y")
 ```
 
-Los datos corresponden a información de estaciones de monitoreo en la RM, para el material particulado corresponde a la estación de Parque O`Higgins. Notar que alguna de las mediciones, como las de dioxido de azufre no están disponibles para el total del tiempo para el que se tiene registro en las mediciones (1997 - 2019). Debido a que no se cuenta con información adecuada para interpolar 
+Los datos corresponden a información de estaciones de monitoreo en la RM, para el material particulado corresponde a la estación de Parque O`Higgins. Notar que alguna de las mediciones, como las de dioxido de azufre no están disponibles para el total del tiempo para el que se tiene registro en las mediciones (1997 - 2019). Debido a que no se cuenta con información adecuada para interpolar estos datos no se incorporarán.
+```{r}
+datos<-subset(datos,select = -c(MP25,NO2))
+multi.hist(datos[,c(5:8)])   
+multi.hist(datos[,c(11:13)])
+correlaciones=cor(datos[,c(5:11)], use = "complete.obs")
+corrplot.mixed(correlaciones,upper = "circle" )
+```
