@@ -1,0 +1,117 @@
+---
+title: "lab1_mindatos_dcc"
+author: '@saguerraty @BastyZ'
+date: "August 6, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(ggplot2)
+tipos<-read.table("https://users.dcc.uchile.cl/~hsarmien/mineria/datasets/accidentes_2010_2011.txt")
+```
+<h2> Pregunta 1 </h2>
+<h4>Parte 1:</h4> ¿Cuáles son las dimensiones del dataset (filas, columnas)? (Recuerde adjuntar código).
+
+```{r pregunta 1 parte 1}
+paste0("el n° de filas: ", nrow(tipos)," y el n° de columnas: ", ncol(tipos))
+```
+
+<h4>Parte 2:</h4> ¿Qué describe cada línea del dataset? (ejemplifique tomando el dato de la fila 100). No es necesario explicar cada columna, sino más bien una idea de lo que plantea cada fila en el dataset.
+```
+La fila 100 quiere decir que en río hurtado el año 2011 no hubo accidentes del tipo atropello
+```
+
+<h4>Parte 3:</h4> Filtre los datos y genera un dataframe en el cual se indique la cantidad de accidentes tipo ``Volcadura`` que hubo en el año ``2010`` en cada localidad.
+
+```{r pregunta 1 parte 3}
+volca= subset(tipos, tipos$TipoAccidente=="Volcadura" & tipos$Muestra=="Comunal" & tipos$Anio==2010)
+```
+
+<h4>Parte 4: </h4> Filtre los datos para incluir sólo los accidentes ocurridos el año 2011. Genere un boxplot donde se indique la cantidad de accidentes categorizado por tipo de accidente. Este tipo de gráfico nos ayudará a entender como se distribuye los datos por cada tipo de accidentes. Es decir, podremos apreciar que tan dispersos o similares son los datos en todo el dataset. También, puede ser útil para observar valores atípicos o outliers en los datos. 
+
+```{r pregunta 1 parte 4, echo=FALSE}
+tipo2011=subset(tipos,tipos$Anio==2011)
+ggplot(tipo2011,aes(y=Cantidad,x=TipoAccidente))+geom_boxplot()
+
+```
+
+<h4>Parte 5:</h4> ¿Qué otra forma de explorar los datos podría agregar? ¿Qué información adicional aporta? Adjunte código y breve explicación.
+
+```{r, echo=FALSE}
+tipos2=subset(tipos,tipos$Muestra=="Regional")
+ggplot(tipos2,aes(y=Cantidad,x=TipoAccidente))+
+  geom_dotplot(binaxis='y', stackdir='center', dotsize=0.6, binwidth = 250)+
+  facet_grid( ~ Anio)
+```
+
+Esta forma de explorar los gráficos además de mostrar más de un año (que no fue pedido)
+agrupa los lados sin __overlap__, lo que permite ver de una vez la distribución de los datos,
+algo imposible en el plot anterior.
+
+
+<h2>Pregunta 2:</h2>
+```{r echo=FALSE}
+afectados <- read.table("https://users.dcc.uchile.cl/~hsarmien/mineria/datasets/afectados_2010_2011.txt")
+```
+```{r, fig.height=12, fig.width=12, echo = F, warning= F, message= F}
+library(ggplot2)
+ggplot(data = afectados[afectados$Muestra == "Regional", ]) +
+  geom_bar(aes(x = Descripcion, y = Cantidad), stat = "identity") + 
+  facet_grid(Estado ~ Anio) +
+  coord_flip() +
+  xlab("Comuna") + 
+  ylab("Cantidad")   
+
+```
+El gráfico pretende mostrar el cambio de accidentalidad en las regiones del país entre los años 2010 y 2011 separado por la tipificación de gravedad del accidente.
+
+No es razonable comparar en términos nominales la cantidad de accidentes que muestra el gráfico ya que la población de referencia y características endógenas de las regiones donde ocurren los accidentes. Una forma más representativa de mostrar la tasa de accidentes es hacerlo con una tasa mediante el porcentaje de accidentes en relación a la población de cada región.
+
+Una manera más apropiada de comparar la accidentalidad sería hacerlo en términos relativos a la población de cada comuna, ya que así se captura la peligrosidad debido a accidentes de estas.
+
+
+<h2> Pregunta 3</h2>
+```{r pregunta 3 parte 1, echo=FALSE}
+poblacion <- read.table("https://users.dcc.uchile.cl/~hsarmien/mineria/datasets/demografico.txt", header=T)
+```
+<h4>Parte 1:</h4> Explique brevemente qué datos muestran los nuevos dataframes generados: `muertosPorComuna`, `tiposPorComuna` y `accidentesPorComuna`.
+
+
+```{r echo=FALSE}
+muertosPorComuna <- with(afectados, afectados[Muestra == "Comunal" & Estado == "Muertos" & Anio == 2011, ])
+
+tiposPorComuna <- with(tipos, tipos[Muestra == "Comunal" & Anio == 2011, ])
+
+accidentesPorComuna <- aggregate(Cantidad ~ Descripcion, tiposPorComuna, FUN=sum)
+
+cruceAccidentes <- merge(accidentesPorComuna, poblacion, by="Descripcion")
+```
+
+- muertosPorComuna: Muestra la cantidad de muertos para cada comuna para el año 2011
+- tiposPorComuna: Muestra la cantidad de accidentes de cada tipo por comuna para el año 2011
+- accidentesPorComuna: Muestra la cantidad de accidentes por comuna en el año 2011
+
+
+<h4>Parte 2:</h4>Ordene cada uno de los datasets `muertosPorComuna` y `cruceAccidentes` por el nombre de la comuna (Descripcion). Hint: Use ```order```.
+```{r pregunta 3 parte 2}
+muertosPorComuna <-muertosPorComuna[order(muertosPorComuna$Descripcion),]
+cruceAccidentes<-cruceAccidentes[order(cruceAccidentes$Descripcion),]
+```
+<h4>Parte 3:</h4> Genere un nuevo dataframe que contenga el nombre de la comuna y la _cantidad de muertes por cualquier tipo de accidente de tránsito_ por cada diez mil habitantes en cada una de las comunas. Este último valor lo puede generar mediante la siguiente fórmula:
+```{r parte 3}
+MuertesPorAccidente = 10000 * muertosPorComuna$Cantidad / (cruceAccidentes$Cantidad * cruceAccidentes$Poblacion + 1)
+muertosporcomuna_porcentual=data.frame(comuna=muertosPorComuna$Descripcion,mortalidad=MuertesPorAccidente)
+muertosporcomuna_porcentual<-muertosporcomuna_porcentual[order(muertosporcomuna_porcentual$mortalidad, decreasing = TRUE),]
+```
+
+<h4>Parte 4:</h4>Según los datos obtenidos, genere un gráfico de barras con las top 10 comunas con mayor tasa de muertes por accidente de tránsito. _Hint: para ordenar los datos en un gráfico de barras, en ggplot use `aes(x=reorder(Descripcion, muertesPorAccidente), y=muertesPorAccidente))`. _
+```{r p3 parte 4, message=FALSE}
+library(dplyr)
+muertosporcomuna_porcentual %>%
+  arrange(desc(mortalidad)) %>%
+  slice(1:10) %>%
+  ggplot(.,aes(reorder(comuna,-mortalidad),mortalidad))+geom_bar(stat = "identity", aes(fill=comuna))+xlab("Comunas")+theme(legend.position = "none", axis.text.x = element_text(angle = 45))
+
+```
