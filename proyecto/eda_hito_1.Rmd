@@ -29,6 +29,7 @@ Se extrajeron datos de del Sistema de Información Nacional de Calidad del Aire(
 
 ### SINCA: Estación de Parque O'higgins
 A través del SINCA se obtiene la información histórica de la siguientes emiciones:
+
 - Material particulado (MP10 y MP2.5) desde el 2000-01-01 hasta hoy (2019-08-25)
 - Monóxido de carbono (CO) desde 1997-04-08 hasta hoy
 - Ozono (O3) desde 1997-04-02 hasta hoy
