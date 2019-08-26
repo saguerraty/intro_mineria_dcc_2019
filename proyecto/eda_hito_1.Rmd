@@ -41,7 +41,7 @@ Se obtiene información histórica diaria de la temperatura media (°C), tempera
 Se relacionan todos los datos anteriores respecto a las fechas, para su manejo más afable. Recordemos que no todas la mediciones tienen la misma cantidad de historial, siendo el rango 2009-2017 el más completo. 
 ```{r echo=FALSE, message=FALSE}
 #lectura de datos
-datos=read_csv("./datosConClimaClean2.csv")
+datos=read_csv("./ClimaYEmisionesData/DatosHito1Clean.csv")
 datos$date=paste0(datos$dia,'/',datos$mes,'/',datos$anno)
 datos$date<-as.POSIXlt(datos$date, format = "%d/%m/%Y")
 ```
@@ -59,7 +59,9 @@ corrplot.mixed(correlaciones,upper = "circle" )
 #TODO
 #with(datos,datos[mes==4,])
 data_monthly<-subset(datos, select= -c(1,4,12))
-data_monthly
+monthly_data<-aggregate(data_monthly[3:9], by=list(anno=data_monthly$anno, mes=data_monthly$mes), FUN = mean)
+jan<-with(monthly_data,monthly_data[mes == 1,])
+jan
 ```
 <!-- # TODO: variación respecto a dia en año anterior (ej. abril 98-06-10 - abril 97-06-10 ) -->
 ```{r}
