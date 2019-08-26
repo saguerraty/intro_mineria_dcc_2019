@@ -40,7 +40,8 @@ correlaciones=cor(datos[,c(5:11)], use = "complete.obs")
 corrplot.mixed(correlaciones,upper = "circle" )
 ```
 
-### TODO: promedios mensuales y comparación anual de dichos meses (ej. Abril 97-19)
+<!-- # TODO: promedios mensuales y comparación anual de dichos meses (ej. Abril 97-19) -->
+<!-- # TODO: variación respecto a dia en año anterior (ej. abril 98-06-10 - abril 97-06-10 ) -->
 
 # Hipótesis
 Temática o problemática central y describir cómo se abordará inicialmente.
