@@ -44,4 +44,13 @@ corrplot.mixed(correlaciones,upper = "circle" )
 <!-- # TODO: variación respecto a dia en año anterior (ej. abril 98-06-10 - abril 97-06-10 ) -->
 
 # Hipótesis
-Temática o problemática central y describir cómo se abordará inicialmente.
+Inicialmente nos planteamos las siguientes hipótesis o dudas, las cuales intentaremos responder durante la exploración y análisis de los datos
+
+- Existe una correlación entre la calidad del aire y las condiciones climáticas (temperatura/precipitaciones).
+- Existen atrones estacionales en las condiciones del aire, y han evolucionado con los años.
+- Existe influencia real de las leyes y restricciones en la calidad del aire en Santiago.
+- Existe una relación entre temperaturas máximas y mediciones de Ozono.
+
+
+
+
