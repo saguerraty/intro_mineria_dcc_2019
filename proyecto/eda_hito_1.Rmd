@@ -64,7 +64,7 @@ monthly_data<-aggregate(data_monthly[3:9], by=list(anno=data_monthly$anno, mes=d
 
 ```
 - *Enero*
-```{r, message=FALSE}
+```{r, message=FALSE, echo=FALSE}
 #ggplot((with(monthly_data,monthly_data[mes==1,]), aes(anno, O3))+geom_point(mapping=aes(anno, O3))
 #plotting Enero
 ozonoene <- ggplot(with(monthly_data,monthly_data[mes==1,]),aes(anno, O3)) + 
@@ -371,7 +371,7 @@ grid.arrange(ozonoene, mp10ene, coene, soene, ncol=2)
 <!-- - *Noviembre* -->
 <!-- - *Diciembre* -->
 <!-- # TODO: variación respecto a dia en año anterior (ej. abril 98-06-10 - abril 97-06-10 ) -->
-```{r}
+```{r, echo=FALSE}
 #TODO
 ```
 
