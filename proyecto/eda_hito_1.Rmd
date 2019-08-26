@@ -15,6 +15,7 @@ library(purrr)
 library(tidyr)
 library(psych)
 library(corrplot)
+library(gridExtra)
 ```
 
 ## Introducción
@@ -63,7 +64,7 @@ monthly_data<-aggregate(data_monthly[3:9], by=list(anno=data_monthly$anno, mes=d
 
 ```
 - *Enero*
-```{r}
+```{r, message=FALSE}
 #ggplot((with(monthly_data,monthly_data[mes==1,]), aes(anno, O3))+geom_point(mapping=aes(anno, O3))
 #plotting Enero
 ozonoene <- ggplot(with(monthly_data,monthly_data[mes==1,]),aes(anno, O3)) + 
@@ -101,9 +102,9 @@ lluviaene <- ggplot(with(monthly_data,monthly_data[mes ==1,]),aes(x=anno, y=Prec
     ggtitle("Tendencia de Precipitaciones en Enero") +
     xlab("Años") + ylab("Precipitaciones (mm)")
 
-grid.arrange(ozonoene, mp10ene, coene, soene, nrow=2)
 
 grid.arrange(tmene, tmaxene, lluviaene, nrow=2)
+grid.arrange(ozonoene, mp10ene, coene, soene, ncol=2)
 ```
 <!-- - *Febrero* -->
 <!-- ```{r} -->
