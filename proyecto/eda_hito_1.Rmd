@@ -55,7 +55,16 @@ corrplot.mixed(correlaciones,upper = "circle" )
 ```
 
 <!-- # TODO: promedios mensuales y comparación anual de dichos meses (ej. Abril 97-19) -->
+```{r}
+#TODO
+#with(datos,datos[mes==4,])
+data_monthly<-subset(datos, select= -c(1,4,12))
+data_monthly
+```
 <!-- # TODO: variación respecto a dia en año anterior (ej. abril 98-06-10 - abril 97-06-10 ) -->
+```{r}
+#TODO
+```
 
 # Hipótesis
 Inicialmente nos planteamos las siguientes hipótesis o dudas, las cuales intentaremos responder durante la exploración y análisis de los datos
