@@ -17,7 +17,9 @@ library(psych)
 library(corrplot)
 ```
 
+# Introducción
 
+# Descripción de datos y exploración
 ```{r echo=FALSE, message=FALSE}
 #lectura de datos
 datos=read_csv("./datosConClimaClean2.csv")
@@ -33,3 +35,8 @@ multi.hist(datos[,c(11:13)])
 correlaciones=cor(datos[,c(5:11)], use = "complete.obs")
 corrplot.mixed(correlaciones,upper = "circle" )
 ```
+
+### TODO: promedios mensuales y comparación anual de dichos meses (ej. Abril 97-19)
+
+# HIpótesis
+Temática o problemática central y describir cómo se abordará inicialmente.
