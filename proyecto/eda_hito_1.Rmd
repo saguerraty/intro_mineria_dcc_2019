@@ -55,26 +55,317 @@ corrplot.mixed(correlaciones,upper = "circle" )
 ```
 
 <!-- # TODO: promedios mensuales y comparación anual de dichos meses (ej. Abril 97-19) -->
+### Tendencias mensuales
+Para evaluar de manera rápida la evolución de las métricas a través de los años, se genera una aggregación por año y mes y se grafican para observar los cambios y patrones más notorios:
 ```{r}
 #TODO
 #with(datos,datos[mes==4,])
 data_monthly<-subset(datos, select= -c(1,4,12))
 monthly_data<-aggregate(data_monthly[3:9], by=list(anno=data_monthly$anno, mes=data_monthly$mes), FUN = mean)
-jan<-with(monthly_data,monthly_data[mes == 1,])
-jan
-ggplot(jan, aes(año, O3))+geom_point(mapping=aes(anno, O3))
 
-#plotting
-ggplot(with(monthly_data,monthly_data[mes < 4,]),aes(x=anno, y=O3)) + 
+```
+- *Enero*
+```{r}
+#ggplot((with(monthly_data,monthly_data[mes==1,]), aes(anno, O3))+geom_point(mapping=aes(anno, O3))
+#plotting Enero
+ggplot(with(monthly_data,monthly_data[mes==1,]),aes(anno, O3)) + 
     geom_bar(stat="identity") + theme_minimal() +
-    ggtitle("Tendencia de Ozono en Verano (Ene-Mar)") +
+    ggtitle("Tendencia de Ozono en Enero") +
     xlab("Años") + ylab("O3 (ppb)")
 
-ggplot(with(monthly_data,monthly_data[mes < 4,]),aes(x=anno, y=Precipitaciones)) + 
+ggplot(with(monthly_data,monthly_data[mes ==1,]),aes(x=anno, y=MP10)) + 
     geom_bar(stat="identity") + theme_minimal() +
-    ggtitle("Tendencia de Precipitaciones en Verano (Ene-Mar)") +
+    ggtitle("Tendencia de MP10 en Enero") +
+    xlab("Años") + ylab("Material Particulado (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes==1,]),aes(x=anno, y=CO)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de CO en Enero") +
+    xlab("Años") + ylab("CO (ppm)")
+
+ggplot(with(monthly_data,monthly_data[mes==1,]),aes(x=anno, y=SO2)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de SO2 en Enero") +
+    xlab("Años") + ylab("SO2 (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes ==1,]),aes(x=anno, y=Tmedia)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura media en Enero") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==1,]),aes(x=anno, y=Tmax)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura máxima en Enero") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==1,]),aes(x=anno, y=Precipitaciones)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Precipitaciones en Enero") +
     xlab("Años") + ylab("Precipitaciones (mm)")
 ```
+- *Febrero*
+```{r}
+ggplot(with(monthly_data,monthly_data[mes==2,]),aes(x=anno, y=O3)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Ozono en Febrero") +
+    xlab("Años") + ylab("O3 (ppb)")
+
+ggplot(with(monthly_data,monthly_data[mes ==2,]),aes(x=anno, y=MP10)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de MP10 en Febrero") +
+    xlab("Años") + ylab("Material Particulado (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes==2,]),aes(x=anno, y=CO)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de CO en Febrero") +
+    xlab("Años") + ylab("CO (ppm)")
+
+ggplot(with(monthly_data,monthly_data[mes==2,]),aes(x=anno, y=SO2)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de SO2 en Febrero") +
+    xlab("Años") + ylab("SO2 (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes ==2,]),aes(x=anno, y=Tmedia)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura media en Febrero") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==2,]),aes(x=anno, y=Tmax)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura máxima en Febrero") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==2,]),aes(x=anno, y=Precipitaciones)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Precipitaciones en Febrero") +
+    xlab("Años") + ylab("Precipitaciones (mm)")
+```
+- *Marzo*
+```{r}
+ggplot(with(monthly_data,monthly_data[mes==3,]),aes(x=anno, y=O3)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Ozono en Marzo") +
+    xlab("Años") + ylab("O3 (ppb)")
+
+ggplot(with(monthly_data,monthly_data[mes ==3,]),aes(x=anno, y=MP10)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de MP10 en Marzo") +
+    xlab("Años") + ylab("Material Particulado (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes==3,]),aes(x=anno, y=CO)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de CO en Marzo") +
+    xlab("Años") + ylab("CO (ppm)")
+
+ggplot(with(monthly_data,monthly_data[mes==3,]),aes(x=anno, y=SO2)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de SO2 en Marzo") +
+    xlab("Años") + ylab("SO2 (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes ==3,]),aes(x=anno, y=Tmedia)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura media en Marzo") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==3,]),aes(x=anno, y=Tmax)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura máxima en Marzo") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==3,]),aes(x=anno, y=Precipitaciones)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Precipitaciones en Marzo") +
+    xlab("Años") + ylab("Precipitaciones (mm)")
+```
+- *Abril*
+```{r}
+ggplot(with(monthly_data,monthly_data[mes==4,]),aes(x=anno, y=O3)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Ozono en Abril") +
+    xlab("Años") + ylab("O3 (ppb)")
+
+ggplot(with(monthly_data,monthly_data[mes ==4,]),aes(x=anno, y=MP10)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de MP10 en Abril") +
+    xlab("Años") + ylab("Material Particulado (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes==4,]),aes(x=anno, y=CO)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de CO en Abril") +
+    xlab("Años") + ylab("CO (ppm)")
+
+ggplot(with(monthly_data,monthly_data[mes==4,]),aes(x=anno, y=SO2)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de SO2 en Abril") +
+    xlab("Años") + ylab("SO2 (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes ==4,]),aes(x=anno, y=Tmedia)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura media en Abril") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==4,]),aes(x=anno, y=Tmax)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura máxima en Abril") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==4,]),aes(x=anno, y=Precipitaciones)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Precipitaciones en Abril") +
+    xlab("Años") + ylab("Precipitaciones (mm)")
+```
+- *Mayo*
+```{r}
+ggplot(with(monthly_data,monthly_data[mes==5,]),aes(x=anno, y=O3)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Ozono en Mayo") +
+    xlab("Años") + ylab("O3 (ppb)")
+
+ggplot(with(monthly_data,monthly_data[mes ==5,]),aes(x=anno, y=MP10)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de MP10 en Mayo") +
+    xlab("Años") + ylab("Material Particulado (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes==5,]),aes(x=anno, y=CO)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de CO en Mayo") +
+    xlab("Años") + ylab("CO (ppm)")
+
+ggplot(with(monthly_data,monthly_data[mes==5,]),aes(x=anno, y=SO2)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de SO2 en Mayo") +
+    xlab("Años") + ylab("SO2 (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes ==5,]),aes(x=anno, y=Tmedia)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura media en Mayo") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==5,]),aes(x=anno, y=Tmax)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura máxima en Mayo") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==5,]),aes(x=anno, y=Precipitaciones)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Precipitaciones en Mayo") +
+    xlab("Años") + ylab("Precipitaciones (mm)")
+```
+- *Junio*
+```{r}
+ggplot(with(monthly_data,monthly_data[mes==6,]),aes(x=anno, y=O3)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Ozono en Junio") +
+    xlab("Años") + ylab("O3 (ppb)")
+
+ggplot(with(monthly_data,monthly_data[mes ==6,]),aes(x=anno, y=MP10)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de MP10 en Junio") +
+    xlab("Años") + ylab("Material Particulado (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes==6,]),aes(x=anno, y=CO)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de CO en Junio") +
+    xlab("Años") + ylab("CO (ppm)")
+
+ggplot(with(monthly_data,monthly_data[mes==6,]),aes(x=anno, y=SO2)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de SO2 en Junio") +
+    xlab("Años") + ylab("SO2 (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes ==6,]),aes(x=anno, y=Tmedia)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura media en Junio") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==6,]),aes(x=anno, y=Tmax)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura máxima en Junio") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==6,]),aes(x=anno, y=Precipitaciones)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Precipitaciones en Junio") +
+    xlab("Años") + ylab("Precipitaciones (mm)")
+```
+- *Julio*
+```{r}
+ggplot(with(monthly_data,monthly_data[mes==7,]),aes(x=anno, y=O3)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Ozono en Julio") +
+    xlab("Años") + ylab("O3 (ppb)")
+
+ggplot(with(monthly_data,monthly_data[mes ==7,]),aes(x=anno, y=MP10)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de MP10 en Julio") +
+    xlab("Años") + ylab("Material Particulado (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes==7,]),aes(x=anno, y=CO)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de CO en Julio") +
+    xlab("Años") + ylab("CO (ppm)")
+
+ggplot(with(monthly_data,monthly_data[mes==7,]),aes(x=anno, y=SO2)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de SO2 en Julio") +
+    xlab("Años") + ylab("SO2 (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes ==7,]),aes(x=anno, y=Tmedia)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura media en Julio") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==7,]),aes(x=anno, y=Tmax)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura máxima en Julio") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==7,]),aes(x=anno, y=Precipitaciones)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Precipitaciones en Julio") +
+    xlab("Años") + ylab("Precipitaciones (mm)")
+```
+- *Agosto*
+```{r}
+ggplot(with(monthly_data,monthly_data[mes==8,]),aes(x=anno, y=O3)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Ozono en Agosto") +
+    xlab("Años") + ylab("O3 (ppb)")
+
+ggplot(with(monthly_data,monthly_data[mes ==8,]),aes(x=anno, y=MP10)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de MP10 en Agosto") +
+    xlab("Años") + ylab("Material Particulado (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes==8,]),aes(x=anno, y=CO)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de CO en Agosto") +
+    xlab("Años") + ylab("CO (ppm)")
+
+ggplot(with(monthly_data,monthly_data[mes==8,]),aes(x=anno, y=SO2)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de SO2 en Agosto") +
+    xlab("Años") + ylab("SO2 (µg∕m3)")
+
+ggplot(with(monthly_data,monthly_data[mes ==8,]),aes(x=anno, y=Tmedia)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura media en Agosto") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==8,]),aes(x=anno, y=Tmax)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de temperatura máxima en Agosto") +
+    xlab("Años") + ylab("T° (°C)")
+
+ggplot(with(monthly_data,monthly_data[mes ==8,]),aes(x=anno, y=Precipitaciones)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Precipitaciones en Agosto") +
+    xlab("Años") + ylab("Precipitaciones (mm)")
+```
+- *Septiembre*
+- *Octubre*
+- *Noviembre*
+- *Diciembre*
 <!-- # TODO: variación respecto a dia en año anterior (ej. abril 98-06-10 - abril 97-06-10 ) -->
 ```{r}
 #TODO
