@@ -1,6 +1,6 @@
 ---
-title: "EDA_hito_1"
-author: '@saguerraty @BastyZ' '@AnnBenavides'
+title: "Informe hito 1"
+author: '@saguerraty @BastyZ @AnnBenavides'
 date: "August 25, 2019"
 output: html_document
 ---
@@ -17,16 +17,16 @@ library(psych)
 library(corrplot)
 ```
 
-# Introducción
+## Introducción
 
 En este proyecto de minería de datos analizaremos información diaria de mediciones de calidad del aire en Parque O'Higgins así como temperaturas y precipitaciones en Quinta Normal. Estas mediciones fueron realizadas respectivamente por SINCA del Ministerio del Medio Ambiente y el CR^2 (Center for Climate and Resilience Research) e incluyen datos obtenidos desde 1997 hasta la fecha en ambas estaciones.
 
 Inicialmente se busca utilizar estos datos para buscar correlacion entre la calidad del aire y temperatura/precipitaciones, buscar patrones estacionales en el estado del aire para analizar su evolución a traves de los años, y buscar ver la influencia de leyes y restricciones ambientales como la restricción vehicular a cataliticos anteriores a 2012.
 
-# Descripción de datos y exploración
+## Descripción de datos y exploración
 Se extrajeron datos de del Sistema de Información Nacional de Calidad del Aire(SINCA) y Center for Climate an Resilence Research (CR2), para mediciones diarias de la calidad del aire e historial climático respectivamente.
 
-## SINCA: Estación de Parque O'higgins
+### SINCA: Estación de Parque O'higgins
 A través del SINCA se obtiene la información histórica de la siguientes emiciones:
 - Material particulado (MP10 y MP2.5) desde el 2000-01-01 hasta hoy (2019-08-25)
 - Monóxido de carbono (CO) desde 1997-04-08 hasta hoy
@@ -34,7 +34,7 @@ A través del SINCA se obtiene la información histórica de la siguientes emici
 - Dióxido de azufre (SO2) desde 1997-07-19 hasta 2017-01-08
 - Dióxido de nitrógeno (NO2) desde 2009-03-26 hasta hoy
 
-## CR2: Foco Quinta Normal
+### CR2: Foco Quinta Normal
 Se obtiene información histórica diaria de la temperatura media (°C), temperatura máxima(°C) y precipitaciones(mm) en la estación de medición de Quinta Normal (la mas cercana a Parque O'higgins) desde 1950 a la fecha.
 
 ## Manejo y exploración de datos
@@ -55,32 +55,33 @@ corrplot.mixed(correlaciones,upper = "circle" )
 ```
 
 <!-- # TODO: promedios mensuales y comparación anual de dichos meses (ej. Abril 97-19) -->
-```{r}
-#TODO
-#with(datos,datos[mes==4,])
+```{r, message=FALSE}
 data_monthly<-subset(datos, select= -c(1,4,12))
 monthly_data<-aggregate(data_monthly[3:9], by=list(anno=data_monthly$anno, mes=data_monthly$mes), FUN = mean)
 jan<-with(monthly_data,monthly_data[mes == 1,])
-jan
-ggplot(jan, aes(año, O3))+geom_point(mapping=aes(anno, O3))
 
 #plotting
-ggplot(with(monthly_data,monthly_data[mes < 4,]),aes(x=anno, y=O3)) + 
+
+enero <- ggplot(jan, aes(año, O3))+geom_point(mapping=aes(anno, O3))
+
+ozono <- ggplot(with(monthly_data,monthly_data[mes < 4,]),aes(x=anno, y=O3)) + 
     geom_bar(stat="identity") + theme_minimal() +
     ggtitle("Tendencia de Ozono en Verano (Ene-Mar)") +
     xlab("Años") + ylab("O3 (ppb)")
 
-ggplot(with(monthly_data,monthly_data[mes < 4,]),aes(x=anno, y=Precipitaciones)) + 
+lluvia <- ggplot(with(monthly_data,monthly_data[mes < 4,]),aes(x=anno, y=Precipitaciones)) + 
     geom_bar(stat="identity") + theme_minimal() +
     ggtitle("Tendencia de Precipitaciones en Verano (Ene-Mar)") +
     xlab("Años") + ylab("Precipitaciones (mm)")
+
+grid.arrange(enero, ozono, lluvia, nrow=3)
 ```
 <!-- # TODO: variación respecto a dia en año anterior (ej. abril 98-06-10 - abril 97-06-10 ) -->
 ```{r}
 #TODO
 ```
 
-# Hipótesis
+## Hipótesis
 Inicialmente nos planteamos las siguientes hipótesis o dudas, las cuales intentaremos responder durante la exploración y análisis de los datos
 
 - Existe una correlación entre la calidad del aire y las condiciones climáticas (temperatura/precipitaciones).
