@@ -1,6 +1,6 @@
 ---
 title: "EDA_hito_1"
-author: '@saguerraty @BastyZ'
+author: '@saguerraty @BastyZ' '@AnnBenavides'
 date: "August 25, 2019"
 output: html_document
 ---
@@ -18,7 +18,7 @@ library(corrplot)
 ```
 
 
-```{r, echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE}
 #lectura de datos
 datos=read_csv("./datosConClimaClean2.csv")
 datos$date=paste0(datos$dia,'/',datos$mes,'/',datos$anno)
