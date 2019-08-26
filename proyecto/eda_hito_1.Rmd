@@ -65,7 +65,7 @@ Inicialmente nos planteamos las siguientes hipótesis o dudas, las cuales intent
 - Existe influencia real de las leyes y restricciones en la calidad del aire en Santiago.
 - Existe una relación entre temperaturas máximas y mediciones de Ozono.
 
-Nuestra idea es analizar los histogramas de las series para entender como se distribuyen los datos para luego cruzarlos y buscar correlaciones que apoyen o refuten nuestras hipotesis. Además en el caso de los patrones pensamos analizar la variaciones de cada medida durante los años respecto al año anterior, tanto de forma agregada como variación diaria/mensual.
+Nuestra idea es analizar los histogramas y series de tiempo para entender como se distribuyen los datos para luego cruzarlos y buscar correlaciones que apoyen o refuten nuestras hipotesis. Además en el caso de los patrones pensamos analizar la variaciones de cada medida durante los años respecto al año anterior, tanto de forma agregada como variación diaria/mensual.
 
 
 
