@@ -62,7 +62,18 @@ data_monthly<-subset(datos, select= -c(1,4,12))
 monthly_data<-aggregate(data_monthly[3:9], by=list(anno=data_monthly$anno, mes=data_monthly$mes), FUN = mean)
 jan<-with(monthly_data,monthly_data[mes == 1,])
 jan
-ggplot(jan, aes(anno, O3))+geom_point(mapping=aes(anno, O3))
+ggplot(jan, aes(año, O3))+geom_point(mapping=aes(anno, O3))
+
+#plotting
+ggplot(with(monthly_data,monthly_data[mes < 4,]),aes(x=anno, y=O3)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Ozono en Verano (Ene-Mar)") +
+    xlab("Años") + ylab("O3 (ppb)")
+
+ggplot(with(monthly_data,monthly_data[mes < 4,]),aes(x=anno, y=Precipitaciones)) + 
+    geom_bar(stat="identity") + theme_minimal() +
+    ggtitle("Tendencia de Precipitaciones en Verano (Ene-Mar)") +
+    xlab("Años") + ylab("Precipitaciones (mm)")
 ```
 <!-- # TODO: variación respecto a dia en año anterior (ej. abril 98-06-10 - abril 97-06-10 ) -->
 ```{r}
