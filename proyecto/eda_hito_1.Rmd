@@ -28,7 +28,7 @@ Inicialmente se busca utilizar estos datos para buscar correlacion entre la cali
 Se extrajeron datos de del Sistema de Información Nacional de Calidad del Aire(SINCA) y Center for Climate an Resilence Research (CR2), para mediciones diarias de la calidad del aire e historial climático respectivamente.
 
 ### SINCA: Estación de Parque O'higgins
-A través del SINCA se obtiene la información histórica de la siguientes emiciones:
+A través del SINCA se obtiene la información histórica de la siguientes emisiones:
 
 - Material particulado (MP10 y MP2.5) desde el 2000-01-01 hasta hoy (2019-08-25)
 - Monóxido de carbono (CO) desde 1997-04-08 hasta hoy
@@ -58,7 +58,7 @@ corrplot.mixed(correlaciones,upper = "circle" )
 <!-- # TODO: promedios mensuales y comparación anual de dichos meses (ej. Abril 97-19) -->
 
 ### Tendencias mensuales
-Para evaluar de manera rápida la evolución de las métricas a través de los años, se genera una aggregación por año y mes y se grafican para observar los cambios y patrones más notorios:
+Para evaluar de manera rápida la evolución de las métricas a través de los años, se genera una agregación por año y mes, y se grafican para observar los cambios y patrones más notorios:
 ```{r}
 data_monthly<-subset(datos, select= -c(1,4,12))
 monthly_data<-aggregate(data_monthly[3:9], by=list(anno=data_monthly$anno, mes=data_monthly$mes), FUN = mean)
