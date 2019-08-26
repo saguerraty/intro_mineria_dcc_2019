@@ -24,14 +24,28 @@ En este proyecto de minería de datos analizaremos información diaria de medici
 Inicialmente se busca utilizar estos datos para buscar correlacion entre la calidad del aire y temperatura/precipitaciones, buscar patrones estacionales en el estado del aire para analizar su evolución a traves de los años, y buscar ver la influencia de leyes y restricciones ambientales como la restricción vehicular a cataliticos anteriores a 2012.
 
 # Descripción de datos y exploración
+Se extrajeron datos de del Sistema de Información Nacional de Calidad del Aire(SINCA) y Center for Climate an Resilence Research (CR2), para mediciones diarias de la calidad del aire e historial climático respectivamente.
+
+## SINCA: Estación de Parque O'higgins
+A través del SINCA se obtiene la información histórica de la siguientes emiciones:
+- Material particulado (MP10 y MP2.5) desde el 2000-01-01 hasta hoy (2019-08-25)
+- Monóxido de carbono (CO) desde 1997-04-08 hasta hoy
+- Ozono (O3) desde 1997-04-02 hasta hoy
+- Dióxido de azufre (SO2) desde 1997-07-19 hasta 2017-01-08
+- Dióxido de nitrógeno (NO2) desde 2009-03-26 hasta hoy
+
+## CR2: Foco Quinta Normal
+Se obtiene información histórica diaria de la temperatura media (°C), temperatura máxima(°C) y precipitaciones(mm) en la estación de medición de Quinta Normal (la mas cercana a Parque O'higgins) desde 1950 a la fecha.
+
+## Manejo y exploración de datos
+Se relacionan todos los datos anteriores respecto a las fechas, para su manejo más afable. Recordemos que no todas la mediciones tienen la misma cantidad de historial, siendo el rango 2009-2017 el más completo. 
 ```{r echo=FALSE, message=FALSE}
 #lectura de datos
 datos=read_csv("./datosConClimaClean2.csv")
 datos$date=paste0(datos$dia,'/',datos$mes,'/',datos$anno)
 datos$date<-as.POSIXlt(datos$date, format = "%d/%m/%Y")
 ```
-
-Los datos corresponden a información de estaciones de monitoreo en la RM, para el material particulado corresponde a la estación de Parque O`Higgins. Notar que alguna de las mediciones, como las de dioxido de azufre no están disponibles para el total del tiempo para el que se tiene registro en las mediciones (1997 - 2019). Debido a que no se cuenta con información adecuada para interpolar estos datos no se incorporarán.
+En particular, dioxido de azufre no están disponibles para el total del tiempo para el que se tiene registro en las mediciones (1997 - 2019). Debido a que no se cuenta con información adecuada para interpolar estos datos no se incorporarán.
 ```{r}
 datos<-subset(datos,select = -c(MP25,NO2))
 multi.hist(datos[,c(5:8)])   
