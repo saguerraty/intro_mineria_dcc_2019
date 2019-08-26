@@ -19,6 +19,10 @@ library(corrplot)
 
 # Introducción
 
+En este proyecto de minería de datos analizaremos información diaria de mediciones de calidad del aire en Parque O'Higgins así como temperaturas y precipitaciones en Quinta Normal. Estas mediciones fueron realizadas respectivamente por SINCA del Ministerio del Medio Ambiente y el CR^2 (Center for Climate and Resilience Research) e incluyen datos obtenidos desde 1997 hasta la fecha en ambas estaciones.
+
+Inicialmente se busca utilizar estos datos para buscar correlacion entre la calidad del aire y temperatura/precipitaciones, buscar patrones estacionales en el estado del aire para analizar su evolución a traves de los años, y buscar ver la influencia de leyes y restricciones ambientales como la restricción vehicular a cataliticos anteriores a 2012.
+
 # Descripción de datos y exploración
 ```{r echo=FALSE, message=FALSE}
 #lectura de datos
@@ -38,5 +42,5 @@ corrplot.mixed(correlaciones,upper = "circle" )
 
 ### TODO: promedios mensuales y comparación anual de dichos meses (ej. Abril 97-19)
 
-# HIpótesis
+# Hipótesis
 Temática o problemática central y describir cómo se abordará inicialmente.
