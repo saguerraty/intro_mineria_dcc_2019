@@ -377,7 +377,7 @@ grid.arrange(ozonoene, mp10ene, coene, soene, ncol=2)
 ```
 
 ## Hipótesis
-Inicialmente nos planteamos las siguientes hipótesis o dudas, las cuales intentaremos responder durante la exploración y análisis de los datos
+Inicialmente nos planteamos las siguientes dudas planteadas a modo de afirmaciones, las cuales intentaremos responder afirmativamente o refutandola durante la exploración y análisis de los datos.
 
 - Existe una correlación entre la calidad del aire y las condiciones climáticas (temperatura/precipitaciones).
 - Existen patrones estacionales en las condiciones del aire, y han evolucionado con los años.

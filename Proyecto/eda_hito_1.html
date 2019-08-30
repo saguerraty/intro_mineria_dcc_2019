@@ -381,7 +381,7 @@ summary {
 <p>Se extrajeron datos de del Sistema de Información Nacional de Calidad del Aire(SINCA) y Center for Climate an Resilence Research (CR2), para mediciones diarias de la calidad del aire e historial climático respectivamente.</p>
 <div id="sinca-estacion-de-parque-ohiggins" class="section level3">
 <h3>SINCA: Estación de Parque O’higgins</h3>
-<p>A través del SINCA se obtiene la información histórica de la siguientes emiciones:</p>
+<p>A través del SINCA se obtiene la información histórica de la siguientes emisiones:</p>
 <ul>
 <li>Material particulado (MP10 y MP2.5) desde el 2000-01-01 hasta hoy (2019-08-25)</li>
 <li>Monóxido de carbono (CO) desde 1997-04-08 hasta hoy</li>
@@ -408,7 +408,7 @@ corrplot.mixed(correlaciones,upper = &quot;circle&quot; )</code></pre>
 <!-- # TODO: promedios mensuales y comparación anual de dichos meses (ej. Abril 97-19) -->
 <div id="tendencias-mensuales" class="section level3">
 <h3>Tendencias mensuales</h3>
-<p>Para evaluar de manera rápida la evolución de las métricas a través de los años, se genera una aggregación por año y mes y se grafican para observar los cambios y patrones más notorios:</p>
+<p>Para evaluar de manera rápida la evolución de las métricas a través de los años, se genera una agregación por año y mes, y se grafican para observar los cambios y patrones más notorios:</p>
 <pre class="r"><code>data_monthly&lt;-subset(datos, select= -c(1,4,12))
 monthly_data&lt;-aggregate(data_monthly[3:9], by=list(anno=data_monthly$anno, mes=data_monthly$mes), FUN = mean)</code></pre>
 <ul>
@@ -638,7 +638,7 @@ monthly_data&lt;-aggregate(data_monthly[3:9], by=list(anno=data_monthly$anno, me
 </div>
 <div id="hipotesis" class="section level2">
 <h2>Hipótesis</h2>
-<p>Inicialmente nos planteamos las siguientes hipótesis o dudas, las cuales intentaremos responder durante la exploración y análisis de los datos</p>
+<p>Inicialmente nos planteamos las siguientes dudas planteadas a modo de afirmaciones, las cuales intentaremos responder afirmativamente o refutandola durante la exploración y análisis de los datos.</p>
 <ul>
 <li>Existe una correlación entre la calidad del aire y las condiciones climáticas (temperatura/precipitaciones).</li>
 <li>Existen patrones estacionales en las condiciones del aire, y han evolucionado con los años.</li>
