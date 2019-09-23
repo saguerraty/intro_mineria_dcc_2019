@@ -44,6 +44,7 @@
 #%%
 from sklearn.datasets import load_wine
 
+
 #%% [markdown]
 # ## PREGUNTA 1.1
 # 
@@ -57,8 +58,8 @@ from sklearn.datasets import load_wine
 #%% [markdown]
 # ### RESPUESTA A PREGUNTA 1.1
 ### RESPUESTA A PREGUNTA 1.1
-import numpy
-
+import numpy 
+numpy.random.seed(123456789)
 wine = load_wine()
 
 data = wine.data
@@ -235,12 +236,10 @@ def plot_confusion_matrix(y_true, y_pred, classes,
 
 #%% [markdown]
 # ### RESPUESTA A PREGUNTA 3.2
-# ::
-# ::
-# 
-# 
-# 
-# 
+# %%
+plot_confusion_matrix(y_test,y_pred,wine.target_names) 
+#%% [markdown]
+# Los valores de la diagonal es la cantidad de casos correctamente identificados en el grupo de test para cada clase, mientras que el 1 en la primera fila y la segunda columna corresponde a una fila identifiacada como de la clase 'class_1' cuando su valor real es pertenecer a la clase 'class_0'.
 #%% [markdown]
 # # PARTE 4: Cross-validation
 # 
@@ -264,8 +263,8 @@ print('Promedio Recall:', np.mean(cv_results['test_recall_macro']))
 print('Promedio F1-score:', np.mean(cv_results['test_f1_macro']))
 print('Promedio Accucary:', np.mean(cv_results['test_accuracy']))
 
-#Si quisieramos mostrar el resultado de cada k-fold, deberiamos quitar 
-#la funcion np.mean para calcular el promedio. Esto mostraria una lista con el resultado de cada fold
+# Si quisieramos mostrar el resultado de cada k-fold, deberiamos quitar 
+# la funcion np.mean para calcular el promedio. Esto mostraria una lista con el resultado de cada fold
 
 #%% [markdown]
 # ## Pregunta 4.1
@@ -274,8 +273,9 @@ print('Promedio Accucary:', np.mean(cv_results['test_accuracy']))
 # 
 #%% [markdown]
 # ### RESPUESTA PREGUNTA 4.1
-# 
-# 
+# El resultado de la pregunt 3.1 es un mejor clasificador que el obtenido en la pregunta 4.1, ya que todos los indicadores de fitting derivados de la matriz de confusión entregan un valor más cercano a 1 que el testeo con la muestra aleatoria tradicional.
+# La ventaja de utilizar cross validation es que permite entrenar el modelo prácticamente eliminando el sesgo inducido al entrenar el modelo.
+
 #%% [markdown]
 # # PARTE 5: FINAL
 #%% [markdown]
@@ -285,9 +285,7 @@ print('Promedio Accucary:', np.mean(cv_results['test_accuracy']))
 # 
 #%% [markdown]
 # ### RESPUESTA A PREGUNTA 5.1
-# ::
-# ::
-# 
+# Consideramos que el mejor en nuestros test es el Arbol de decisiones, ya que tanto si se usa o no *cross-validation* obtiene resultados mucho mejores
 #%% [markdown]
 # ## Pregunta 5.2
 # 
@@ -302,6 +300,23 @@ print('Promedio Accucary:', np.mean(cv_results['test_accuracy']))
 from sklearn.neighbors import KNeighborsClassifier
 K = 5 # numero de vecinos
 knn = KNeighborsClassifier(n_neighbors=K)  
+
+## AGREGUE CODIGO PREGUNTA 5.2
+
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
+
+print("Para k-nearest neighbors")
+
+print(classification_report(y_test, y_pred))
+
+scoring = ['precision_macro', 'recall_macro', 'accuracy', 'f1_macro']
+cv_results = cross_validate(knn, X, y, cv = 10, scoring = scoring, return_train_score= True)
+
+print('Promedio Precision:', np.mean(cv_results['test_precision_macro']))
+print('Promedio Recall:', np.mean(cv_results['test_recall_macro']))
+print('Promedio F1-score:', np.mean(cv_results['test_f1_macro']))
+print('Promedio Accucary:', np.mean(cv_results['test_accuracy']))
 
 ## AGREGUE CODIGO PREGUNTA 5.2
 
