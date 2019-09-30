@@ -107,10 +107,10 @@ plt.show() #muestra los plot creados con seaborn en la linea anterior
 # ¿Cuáles son las observaciones principales que puede obtener de la visualización? Explique. 
 #%% [markdown]
 # ### RESPUESTA A PREGUNTA 1.3
-# - la variable alchool pareciese ser distribuida uniformemente salvo datos extremos en ambas colas
-# - la variable de acido malico pareciese ser distribucion gama mientras las variables restantes tienen comportamiento que semeja una distribución normal
+# - La variable alcohol pareciese ser distribuida uniformemente salvo datos extremos en ambas colas
+# - La variable de acido malico pareciese ser distribucion gama mientras las variables restantes tienen comportamiento que semeja una distribución normal
 # - La disperción de los datos en las variabes de alcohol y ácido malico es mayor al de las variables de distribución normal
-# - A simple vista no pareciese haber una fuerte correlación entre las variables ploteadas, donde se esperaría que la mayor sea una correlación positiva entre la acidez de la ceniza y la cantidad de ceniza en las variables 'acidity_of_ash' y 'ash' respectivamente.
+# - A simple vista no pareciese haber una fuerte correlación entre las variables ploteadas, donde se esperaría que la mayor sea una correlación positiva entre la acidez de la ceniza y la cantidad de ceniza en las variables 'acidity_of_ash' y 'ash' respectivamente, lo que es esperable debido a la naturaleza del fenómeno subyaciente 
 #%% [markdown]
 # # PARTE 2: Entrenar/testear con los mismos datos
 #%% [markdown]
@@ -148,8 +148,9 @@ print(classification_report(y, y_pred))
 # De acuerdo a las métricas obtenidas ¿Es buena la predicción? ¿Recomendaria utilizar este clasificador en una aplicacion para clasificar vinos?
 #%% [markdown]
 # ### RESPUESTA A PREGUNTA 2.2
-# La predicción es perfecta puesto que el training set es igual al testing set y por ende permitimos que nuestro clasificador se aprenda todas las respuestas.
-# Por estom mismo no recomendaría usar este clasificador, ya que no sabemos como se comporta para datos que no conoce por el *overfitting*.
+# La predicción es perfecta puesto que el training set es igual al testing set y por ende permitimos que nuestro clasificador se aprenda todas las respuestas, generando un overfitting de los parámetros del clasificador a nuestro grupo de entrenamiento.
+# Por esto mismo no recomendaría usar este clasificador, ya que a priori no se conoce el rendimiento en un grupo de prueba que tenga un comportamiento distinto al delgrupo de entrenamiento.
+# El caso donde el comportamiento sería identico al grupo de entrenamiento es cuando el fenómeno tiene un comportamiento determinístico o bien no tiene variación, para ambos casos no es interesante o relevante hacer predicción de los valores que se espera tener en el futuro.
 #%% [markdown]
 # # Parte 3: Otra variante: Dividiendo el dataset para entrenar y testear
 # 
@@ -174,15 +175,18 @@ clf = DecisionTreeClassifier()
 clf.fit(X_train, y_train)    ## Entrenamos con X_train y clases y_train
 
 y_pred = clf.predict(X_test)   ## Predecimos con nuevos datos (los de test X_test)
-
+y_train_pred = clf.predict(X_train)
 from sklearn.metrics import classification_report
 
 print(classification_report(y_test, y_pred))
 
+#%%
+print(classification_report(y_train,y_train_pred))
 #%% [markdown]
 # ### RESPUESTA A PREGUNTA 3.1 Continuación
-# En este caso los resultados no son perfectos, obteniendo una precisión tan baja como .89 en class_0; Pero ciertamente es mejor ya que sabemos que aprendió y no memorizó los resultados.
-#Si tuviese que elegir entre los dos, claramente elegiría este para cualquier aplicación, excepto una que funcione sobre el dataset (osea, hacer trampa con el overfitting)
+# En este caso los resultados no están perfectamente ajustados al grupo de entrenamiento, obteniendo una precisión de .89 en class_0.
+# Los indicadores de rendimiento en esta oportunidad indican que el modelo no está sobre ajustado, por lo que sería un mejor predictor que el caso anterior.
+# Si tuviese que elegir entre los dos, claramente elegiría este para cualquier aplicación, excepto una que funcione sobre el dataset (osea, hacer trampa con el overfitting)
 #%% [markdown]
 # ## Pregunta 3.2
 # 
@@ -285,7 +289,7 @@ print('Promedio Accucary:', np.mean(cv_results['test_accuracy']))
 # 
 #%% [markdown]
 # ### RESPUESTA A PREGUNTA 5.1
-# Consideramos que el mejor en nuestros test es el Arbol de decisiones, ya que tanto si se usa o no *cross-validation* obtiene resultados mucho mejores
+# Consideramos que el mejor en nuestros test es el Arbol de decisiones, ya que tanto si se usa o no *cross-validation* obtiene resultados con un mejor ajuste sin estar sobre ajustado.
 #%% [markdown]
 # ## Pregunta 5.2
 # 
@@ -322,7 +326,9 @@ print('Promedio Accucary:', np.mean(cv_results['test_accuracy']))
 
 #%% [markdown]
 # ### RESPUESTA A PREGUNTA 5.2 (EXPLICACION)
-# 
-# 
-# 
+# Existe una diferencia en desempeño notoria entre el árbol de decisiones y KNN correspondiente a aprox un 20% de desempeño en general. Por esto podríamos aventurar que el árbol de decisiones es mejor que knn.
+ 
 
+
+
+#%%
