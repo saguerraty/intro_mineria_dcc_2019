@@ -1,0 +1,37 @@
+---
+title: "Informe hito 2"
+author: '@saguerraty @Bastyz'
+date: "October 6, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Avance Hito 2
+
+```{r paquetes y setup}
+library(readr)
+library(sqldf)
+setwd("C:/Users/sague/Documents/GitHub/intro_mineria_dcc_2019/proyecto")
+
+```
+## Contexto y 
+
+```{r leer datos y mergear , message=FALSE}
+emergencia=read_csv("./scrapping_emergencia_aire/predLimpias.csv")
+atmos=read_csv("./ClimaYEmisionesData/DatosHito1CleanWithDates.csv")
+
+tabla=sqldf("SELECT")
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
