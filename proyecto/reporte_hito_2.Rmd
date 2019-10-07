@@ -11,27 +11,54 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #Avance Hito 2
 
-```{r paquetes y setup}
+```{r paquetes y setup , message=FALSE}
 library(readr)
 library(sqldf)
+library(rprojroot)
+library(ggplot2)
+library(nnet)
+library(stats)
+library(ROCR)
+library(rpart)
+library(PRROC)
 setwd("C:/Users/sague/Documents/GitHub/intro_mineria_dcc_2019/proyecto")
-
 ```
-## Contexto y 
+## Contexto y motivación
 
-```{r leer datos y mergear , message=FALSE}
+
+```{r leer datos y mergear , message=FALSE , echo=FALSE}
 emergencia=read_csv("./scrapping_emergencia_aire/predLimpias.csv")
 atmos=read_csv("./ClimaYEmisionesData/DatosHito1CleanWithDates.csv")
 
-tabla=sqldf("SELECT")
+tabla=sqldf("SELECT atmos.*,
+            emergencia.'ESTADO MP10' as 'cat_mp10',
+            emergencia.'ESTADO MP2,5' as 'cat_mp25' 
+            FROM atmos JOIN emergencia ON atmos.Fecha = emergencia.Fecha", drv="SQLite")
 ```
 
-## Including Plots
+```{r}
 
-You can also embed plots, for example:
+tabla_ss= subset(tabla, select = -c(MP10,MP25))
+tabla_ss$cat_mp10[tabla_ss$cat_mp10=="PREEMERGENCIA"]<-"PRE EMERGENCIA"
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+tabla_ss$cat_mp10<- as.factor(tabla_ss$cat_mp10)
+train_ind=sample(seq_len(nrow(tabla)),size = nrow(tabla)*0.7)
+tabla_learn = tabla_ss[train_ind,]
+tabla_test = tabla_ss[-train_ind,]
+
+tabla_learn$cat_mp10=relevel(tabla_learn$cat_mp10, ref = "REGULAR")
+mod_multi_log=multinom(cat_mp10~O3+CO+Tmedia+Tmax+Precipitaciones, data = tabla_learn)
+
+tabla_test$pred_multilog = predict(mod_multi_log, newdata = tabla_test)
+
+tabla_test<-tabla_test[which(!is.na(tabla_test$pred_multilog)),]
+
+rocs = roc.curve(tabla_test$cat_mp10,tabla_test$pred_multilog, curve = TRUE)
+plot(rocs)
+
+summary(mod_multi_log)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+ggplot(emergencia)+geom_bar(aes(`ESTADO MP10`))
+```
