@@ -1,6 +1,6 @@
 ---
 title: "Informe hito 2"
-author: '@saguerraty @Bastyz' '@HaineAnn'
+author: '@saguerraty @Bastyz @HaineAnn'
 date: "October 6, 2019"
 output: html_document
 ---
@@ -21,6 +21,7 @@ library(stats)
 library(ROCR)
 library(rpart)
 library(PRROC)
+library(corrplot)
 getwd()
 setwd("C:/Users/sague/Documents/GitHub/intro_mineria_dcc_2019/proyecto")
 ```
@@ -66,6 +67,21 @@ plot(rocs)
 
 summary(mod_multi_log)
 ```
+Además los datos para algunas de las fechas no poseen todas las mediciones, por lo que se deben manejar los casos en que no hay valores en alguna columna. Los valores faltantes por cada columna son:
+
+```{r}
+na_count <-sapply(tabla, function(y) sum(length(which(is.na(y)))))
+na_count <- data.frame(na_count)
+na_count
+```
+#### Correlacion de los datos
+```{r}
+tabla.cor <- cor(subset(tabla, select = -c(cat_mp10,cat_mp25,Fecha,anno,dia,MP25,NO2)), use = "pairwise.complete.obs" )
+corrplot( tabla.cor )
+
+```
+
+
 ### Balanceo de las clases
 
 El dataset de caracterización de situación de emergencia en su estado original tiene las clases de 'pre emergencia' y 'pre alerta' subrepresentadas, lo que probablemente explica el mal rendimiento de predicción del modelo Logit multinomial par esas clases. Como solución a este problema se aplicó oversampeling utilizando 'SMOTE' ya que es un problema de oversampeling multiclase. El código para realizar el oversampeling se hizo en python debido a que la implementación de SMOTE en R está pensaba para un clasificador binario, por lo que se utilizó el subpaquete: 'random_oversampeling' de la libreria 'imblearn'.
