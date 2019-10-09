@@ -30,16 +30,23 @@ setwd("C:/Users/sague/Documents/GitHub/intro_mineria_dcc_2019/proyecto")
 emergencia=read_csv("./scrapping_emergencia_aire/predLimpias.csv")
 atmos=read_csv("./ClimaYEmisionesData/DatosHito1CleanWithDates.csv")
 
+#arreglar error de formato en pre emergencia
+emergencia$'ESTADO MP10'[emergencia$`ESTADO MP10`=="PREEMERGENCIA"]<-"PRE EMERGENCIA"
+
 tabla=sqldf("SELECT atmos.*,
             emergencia.'ESTADO MP10' as 'cat_mp10',
             emergencia.'ESTADO MP2,5' as 'cat_mp25' 
             FROM atmos JOIN emergencia ON atmos.Fecha = emergencia.Fecha", drv="SQLite")
-```
 
+write_csv(tabla,"C:/Users/sague/Documents/GitHub/intro_mineria_dcc_2019/proyecto/tabla_imbalanced.csv")
+```
+## Datos
+
+### Catacterización de los datos
 ```{r}
 
 tabla_ss= subset(tabla, select = -c(MP10,MP25))
-tabla_ss$cat_mp10[tabla_ss$cat_mp10=="PREEMERGENCIA"]<-"PRE EMERGENCIA"
+# tabla_ss$cat_mp10[tabla_ss$cat_mp10=="PREEMERGENCIA"]<-"PRE EMERGENCIA"
 
 tabla_ss$cat_mp10<- as.factor(tabla_ss$cat_mp10)
 train_ind=sample(seq_len(nrow(tabla)),size = nrow(tabla)*0.7)
@@ -58,7 +65,9 @@ plot(rocs)
 
 summary(mod_multi_log)
 ```
+### Balanceo de las clases
 
+El dataset de caracterización de situación de emergencia en su estado original tiene las clases de 'pre emergencia' y 'pre alerta' subrepresentadas, lo que probablemente explica el mal rendimiento de predicción del modelo Logit multinomial par esas clases. Como solución a este problema se aplicó oversampeling utilizando 'SMOTE' ya que es un problema de oversampeling multiclase. El código para realizar el oversampeling se hizo en python debido a que la implementación de SMOTE en R está pensaba para un clasificador binario, por lo que se utilizó el subpaquete: 'random_oversampeling' de la libreria 'imblearn'.
 ```{r}
 ggplot(emergencia)+geom_bar(aes(`ESTADO MP10`))
 ```
