@@ -1,6 +1,6 @@
 ---
 title: "Informe hito 2"
-author: '@saguerraty @Bastyz'
+author: '@saguerraty @Bastyz' '@HaineAnn'
 date: "October 6, 2019"
 output: html_document
 ---
@@ -21,6 +21,7 @@ library(stats)
 library(ROCR)
 library(rpart)
 library(PRROC)
+getwd()
 setwd("C:/Users/sague/Documents/GitHub/intro_mineria_dcc_2019/proyecto")
 ```
 ## Contexto y motivación
@@ -38,7 +39,7 @@ tabla=sqldf("SELECT atmos.*,
             emergencia.'ESTADO MP2,5' as 'cat_mp25' 
             FROM atmos JOIN emergencia ON atmos.Fecha = emergencia.Fecha", drv="SQLite")
 
-write_csv(tabla,"C:/Users/sague/Documents/GitHub/intro_mineria_dcc_2019/proyecto/tabla_imbalanced.csv")
+write_csv(tabla,"./tabla_imbalanced.csv")
 ```
 ## Datos
 
