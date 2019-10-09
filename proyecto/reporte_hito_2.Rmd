@@ -22,8 +22,9 @@ library(ROCR)
 library(rpart)
 library(PRROC)
 library(corrplot)
+library(here)
 getwd()
-setwd("C:/Users/sague/Documents/GitHub/intro_mineria_dcc_2019/proyecto")
+setwd(here())
 ```
 ## Contexto y motivación
 
