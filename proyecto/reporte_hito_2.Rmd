@@ -23,29 +23,30 @@ library(rpart)
 library(PRROC)
 library(corrplot)
 library(here)
-getwd()
 setwd(here())
+# confirma que el WD esté bien configurado
+getwd()
 ```
 ## Contexto y motivación
-El proyecto se propone resolver determinar si con las herramientas del curso "Es posible mejorar el sistema de determinación de alerta ambiental en Santiago", específicament: 
-"Cómo determinan los factores medio ambientales observables el nivel de material particulado en Santiago""
+El proyecto se propone resolver determinar si con las herramientas del curso "Es posible mejorar el sistema de determinación de alerta ambiental en Santiago", específicamente: 
+'Cómo determinan los factores medio ambientales observables el nivel de material particulado en Santiago'"
 
-Lo que se traduce en un problema de clasificación multiclase (ya que existe más de un tipo de condición de alerta ambiental) con el objetivo de determinar la condición de alerta ambiental (nuestra etiqueta) en función de parámetros observables derivados de estaciones de monitoreo ambiental en la ciudad de Santiago, Chile.
+Lo que se traduce en un problema de clasificación multiclase, dado que existe más de un tipo de condición de alerta ambiental, con el objetivo de determinar la condición de alerta ambiental (nuestra etiqueta) en función de parámetros observables derivados de estaciones de monitoreo ambiental en la ciudad de Santiago, Chile desde 1997 hasta el presente.
 
 El valor que presenta encontrar una mejora en el método utilizado para determinar una categoría de alerta ambiental va en:
 
-1- Cuantificar el efecto de las variables utilizadas en la determinación de una situación de alerta ambientas (considerando algún grado de interpretabilidad en el modelo utilizado, esto no se mantiene para algo como un clasificador con un Multi layer perceptron)
+1- Cuantificar el efecto de las variables utilizadas en la determinación de una situación de alerta ambientas (considerando algún grado de interpretabilidad en el modelo utilizado, esto no se mantiene para algo como un clasificador con un perceptron multicapa)
 
-2- La disminución de la carga laboral (en HH) asignada a determinar una situación de alerta o emergencia ambiental, ya que la aplicación del modelo técnicamente se puede automatizar.
+2- La disminución de la carga laboral en HH asignada a determinar una situación de alerta o emergencia ambiental, ya que la aplicación del modelo técnicamente se puede automatizar.
 
-3- La mejora en la planificación de la ciudadanía al permitir advertir una situación de emergencia ambiental mediante, regresores y luego el clasificador con más anticipación de lo que se hace actualmente, es decir se podría advertir con anticipación cuando hay una alta probabilidad de que se decrete una emergencia ambiental.
+3- La mejora en la planificación de la ciudadanía al permitir advertir una situación de emergencia ambiental mediante regresores y luego el clasificador, con más anticipación de lo que se hace actualmente, es decir, se podría advertir con anticipación cuando hay una alta probabilidad de que se decrete una emergencia ambiental.
 
 
 ```{r leer datos y mergear , message=FALSE , echo=FALSE, warning=FALSE}
 emergencia=read_csv("./scrapping_emergencia_aire/predLimpias.csv")
 atmos=read_csv("./ClimaYEmisionesData/DatosHito1CleanWithDates.csv")
 
-#arreglar error de formato en pre emergencia
+#arreglar error de formato en pre emergencia por variaciones inesperadas en PREEMERGENCIA
 emergencia$'ESTADO MP10'[emergencia$`ESTADO MP10`=="PREEMERGENCIA"]<-"PRE EMERGENCIA"
 
 tabla=sqldf("SELECT atmos.*,
@@ -57,9 +58,17 @@ write_csv(tabla,"./tabla_imbalanced.csv")
 ```
 ## Datos
 
-Los datos utilizados durante el proyecto están almacenados y disponibles de manera pública por el Centro de investigación para el clima y la resiliencia (CR2) en el caso de los datos atmosféricos y de temperatura, mientras que la etiqueta del modelo se obtiene mediante 'scrapping' del reporte diario de la situación de alerta ambiental en la página del Ministerio de medio ambiente.
+Los datos utilizados durante el proyecto están almacenados y disponibles de manera pública por el Centro de investigación para el clima y la resiliencia (CR2) en el caso de los datos atmosféricos y de temperatura, y en datos.gob.cl para el caso del los datos de contaminación atmosférica pertenecientes al SINCA (MMA) , mientras que la etiqueta del modelo se obtiene mediante 'scrapping' del reporte diario de la situación de alerta ambiental en la página del Ministerio de medio ambiente (http://airesantiago.gob.cl/balance-1997-2017/calidad-del-aire/).
 
 ### Catacterización de los datos
+Los datos están compuestos por fecha, valor de las distintas mediciones y la categorización del estado del aire; la fecha se encuentre en el formato AAAA-MM-DD como también en columnas separadas; las distintas medidas se encuentran en valores numéricos y la categorización se encuentra en formato de texto.
+
+````{r}
+head(tabla, n= 3L)
+```
+
+
+A continuación se muestra la curva ROC para un modelo de regrasión multinomial sobre dos subset de relación 70-30.
 ```{r}
 
 tabla_ss= subset(tabla, select = -c(MP10,MP25))
@@ -82,7 +91,9 @@ plot(rocs)
 
 summary(mod_multi_log)
 ```
-Además los datos para algunas de las fechas no poseen todas las mediciones, por lo que se deben manejar los casos en que no hay valores en alguna columna. Los valores faltantes por cada columna son:
+
+#### Datos Nulos o Faltantes
+Los datos para algunas de las fechas no poseen todas las mediciones, por lo que se deben manejar los casos en que no hay valores en alguna columna. Los valores faltantes por cada columna son:
 
 ```{r}
 na_count <-sapply(tabla, function(y) sum(length(which(is.na(y)))))
