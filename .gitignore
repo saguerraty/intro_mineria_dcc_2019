@@ -3,4 +3,6 @@
 .RData
 .Ruserdata
 .ipynb_checkpoints
-
+*.Rproj
+proyecto/reporte_hito_2_files/*
+intro_mineria_dcc_2019.Rproj
