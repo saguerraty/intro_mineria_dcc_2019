@@ -106,13 +106,13 @@ na_count
 
 ```{r imputar datos faltantes}
 try(tabla<-subset(tabla, select = -c(SO2,MP25,NO2)))
-tabla[which(is.na(tabla$CO)),"CO"]<-median(tabla$CO)
-tabla[which(is.na(tabla$MP10)),"MP10"]<-median(tabla$MP10)
+tabla[which(is.na(tabla$CO)),"CO"]<-median(tabla$CO, na.rm = TRUE)
+tabla[which(is.na(tabla$MP10)),"MP10"]<-median(tabla$MP10, na.rm = TRUE)
 
 lin_fit <-lm(O3~mes+dia+MP10+CO+Tmedia+Tmax+Precipitaciones,data = tabla ,na.action = "na.exclude")
 tabla[which(is.na(tabla$O3)),"O3"]<-predict(lin_fit,tabla[which(is.na(tabla$O3)),c("mes","dia","MP10","CO","Tmedia","Tmax","Precipitaciones")])
 
-write_csv(tabla,"./tabla_imbalanced.csv")
+write.csv(tabla,"./tabla_imbalanced.csv", row.names = FALSE)
 
 na_verify = sapply(tabla, function(y) sum(length(which(is.na(y)))))
 na_verify <- data.frame(na_verify)
