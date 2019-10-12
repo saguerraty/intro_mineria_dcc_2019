@@ -7,9 +7,12 @@ import pandas as pd
 tabla_imbalanced = pd.read_csv("./tabla_imbalanced.csv")
 
 # we drop SO2, MP25, and NO2 due to much NaN
-tabla_imbalanced = tabla_imbalanced.drop(columns=['SO2', 'MP25', 'NO2'])
+#tabla_imbalanced = tabla_imbalanced.drop(columns=['SO2', 'MP25', 'NO2'])
 # %%
 tabla_imbalanced.dtypes
+
+#%% 
+tabla_imbalanced.isna().sum()
 
 # %%
 columns = list(tabla_imbalanced)
@@ -19,8 +22,11 @@ nan_count = tabla_imbalanced.isna().sum()
 # %%
 smotenc = SMOTENC(['cat_mp10', 'cat_mp25'])
 
-X = tabla_imbalanced.iloc[:, 0:13]
+X = tabla_imbalanced.iloc[:, 0:12]
 y = tabla_imbalanced.loc[:, 'cat_mp10']
 
 X_res, y_res = smotenc.fit_resample(X, y)
 print(f'Resampled dataset samples per class{Counter(y_res)}')
+
+
+#%%
