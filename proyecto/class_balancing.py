@@ -3,7 +3,7 @@ from imblearn.over_sampling import SMOTENC
 import pandas as pd
 
 
-tabla_imbalanced = pd.read_csv("./tabla_imbalanced.csv").drop(columns=['Fecha'])
+tabla_imbalanced = pd.read_csv("./tabla_imbalanced_cool.csv").drop(columns=['Fecha'])
 
 # we drop SO2, MP25, and NO2 due to much NaN
 #tabla_imbalanced = tabla_imbalanced.drop(columns=['SO2', 'MP25', 'NO2'])
@@ -19,7 +19,7 @@ categories = tabla_imbalanced['cat_mp10'].drop_duplicates().tolist()
 nan_count = tabla_imbalanced.isna().sum()
 
 # %%
-smotenc = SMOTENC(categorical_features=[10])
+smotenc = SMOTENC(categorical_features=[10], k_neighbors=3)
 
 X = tabla_imbalanced.iloc[:, 0:11]
 y = tabla_imbalanced.iloc[:, 9:10]
