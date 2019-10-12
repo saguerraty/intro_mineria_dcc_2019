@@ -132,3 +132,8 @@ El dataset de caracterización de situación de emergencia en su estado original
 ```{r}
 ggplot(emergencia)+geom_bar(aes(`ESTADO MP10`))
 ```
+
+## Feedback del Hito 1
+En general las criticas de los compañeros dirijidas a la presentación son de la presentación misma; estos comentarios fueron tomados completamente, entre los que se encuentran tener un título más descriptivo del proyecto, agregar números a la diapositiva y tener objetivos más claramente definidos; esto último es una critica de la que somos bastante concientes ya que en la realidad no teníamos claro el objetivo final, sino que trabajamos con preguntas abiertas.
+
+Además entre los comentarios hechos a los datos se nos sugiere _ignorar medidas nulas y errores de medición_, critica que tomamos completamente con la salvedad de que el como los ignoramos o eliminamos puede afectar nuestros resultados, ya que en general los datos faltan por periodos de tiempo bien definidos y el simplemente eliminar la columna o medidas muy extremas podrían hacernos perder información que puede ser relevante.
