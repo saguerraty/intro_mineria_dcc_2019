@@ -57,7 +57,6 @@ tabla=sqldf("SELECT atmos.*,
 tabla$MP10<-as.numeric(tabla$MP10)
 tabla$CO<-as.numeric(tabla$CO)
 
-write_csv(tabla,"./tabla_imbalanced.csv")
 ```
 ## Datos
 
@@ -72,7 +71,7 @@ head(tabla, n= 3L)
 
 
 A continuación se muestra la curva ROC para un modelo de regrasión multinomial sobre dos subset de relación 70-30.
-```{r}
+```{r entrenar logit multinomial}
 
 tabla_ss= subset(tabla, select = -c(MP10,MP25))
 # tabla_ss$cat_mp10[tabla_ss$cat_mp10=="PREEMERGENCIA"]<-"PRE EMERGENCIA"
@@ -98,20 +97,22 @@ summary(mod_multi_log)
 #### Datos Nulos o Faltantes
 Los datos para algunas de las fechas no poseen todas las mediciones, por lo que se deben manejar los casos en que no hay valores en alguna columna. Los valores faltantes por cada columna son:
 
-```{r}
+```{r conteo de NA}
 na_count <-sapply(tabla, function(y) sum(length(which(is.na(y)))))
 na_count <- data.frame(na_count)
 na_count
 ```
 
 
-```{r inputar datos faltantes}
+```{r imputar datos faltantes}
 try(tabla<-subset(tabla, select = -c(SO2,MP25,NO2)))
 tabla[which(is.na(tabla$CO)),"CO"]<-median(tabla$CO)
 tabla[which(is.na(tabla$MP10)),"MP10"]<-median(tabla$MP10)
 
 lin_fit <-lm(O3~mes+dia+MP10+CO+Tmedia+Tmax+Precipitaciones,data = tabla ,na.action = "na.exclude")
 tabla[which(is.na(tabla$O3)),"O3"]<-predict(lin_fit,tabla[which(is.na(tabla$O3)),c("mes","dia","MP10","CO","Tmedia","Tmax","Precipitaciones")])
+
+write_csv(tabla,"./tabla_imbalanced.csv")
 
 na_verify = sapply(tabla, function(y) sum(length(which(is.na(y)))))
 na_verify <- data.frame(na_verify)
