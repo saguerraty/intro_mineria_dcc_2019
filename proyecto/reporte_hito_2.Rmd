@@ -111,7 +111,9 @@ tabla[which(is.na(tabla$MP10)),"MP10"]<-median(tabla$MP10, na.rm = TRUE)
 
 lin_fit <-lm(O3~mes+dia+MP10+CO+Tmedia+Tmax+Precipitaciones,data = tabla ,na.action = "na.exclude")
 tabla[which(is.na(tabla$O3)),"O3"]<-predict(lin_fit,tabla[which(is.na(tabla$O3)),c("mes","dia","MP10","CO","Tmedia","Tmax","Precipitaciones")])
+rm(lin_fit)
 
+tabla$cat_mp10<-as.factor(tabla$cat_mp10)
 write.csv(tabla,"./tabla_imbalanced.csv", row.names = FALSE)
 
 na_verify = sapply(tabla, function(y) sum(length(which(is.na(y)))))
@@ -130,9 +132,18 @@ Se encuentran correlaciones entre O3 y MP10 y la temperatura máxima del día; a
 
 El dataset de caracterización de situación de emergencia en su estado original tiene las clases de 'pre emergencia' y 'pre alerta' subrepresentadas, lo que probablemente explica el mal rendimiento de predicción del modelo Logit multinomial par esas clases. Como solución a este problema se aplicó oversampeling utilizando 'SMOTE' ya que es un problema de oversampeling multiclase. El código para realizar el oversampeling se hizo en python debido a que la implementación de SMOTE en R está pensaba para un clasificador binario, por lo que se utilizó el subpaquete: 'random_oversampeling' de la libreria 'imblearn'.
 ```{r}
+
 ggplot(emergencia)+geom_bar(aes(`ESTADO MP10`))
 ```
 
+
+```{r logit multinomial con balanceo}
+train_ind=sample(seq_len(nrow(tabla)),size = nrow(tabla)*0.7)
+tabla_learn = tabla[train_ind,]
+tabla_test = tabla[-train_ind,]
+
+logit_balanced=multinom(cat_mp10~O3+CO+Tmedia+Tmax+Precipitaciones, data = tabla_learn)
+```
 ## Feedback del Hito 1
 En general las criticas de los compañeros dirijidas a la presentación son de la presentación misma; estos comentarios fueron tomados completamente, entre los que se encuentran tener un título más descriptivo del proyecto, agregar números a la diapositiva y tener objetivos más claramente definidos; esto último es una critica de la que somos bastante concientes ya que en la realidad no teníamos claro el objetivo final, sino que trabajamos con preguntas abiertas.
 
