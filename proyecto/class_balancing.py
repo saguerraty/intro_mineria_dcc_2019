@@ -1,9 +1,8 @@
-# %%
 from collections import Counter
 from imblearn.over_sampling import SMOTENC
 import pandas as pd
 
-# %%
+
 tabla_imbalanced = pd.read_csv("./tabla_imbalanced.csv")
 
 # we drop SO2, MP25, and NO2 due to much NaN
