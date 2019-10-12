@@ -59,9 +59,100 @@ tabla$CO<-as.numeric(tabla$CO)
 
 write_csv(tabla,"./tabla_imbalanced.csv")
 ```
+
+## Hipótesis Iniciales
+
+Existe una correlación relevante del estado del aire con las condiciones climáticas.
+
+Existe una relación entre temperaturas máximas y mediciones de O3.
+
+Hay patrones estacionales en las condiciones del aire, los cuales han evolucionado en los años.
+
+Las leyes y restricciones en la calidad del aire en Santiago tienen influencia real en las condiciones del aire.
+
+Se puede predecir de mejor manera el estado de alerta ambiental utilizando métodos de clasificación, en vez del actual modelo matemático.
+
+De haber una relación entre las condiciones climáticas y la radiación solar receptada por paneles solares, se puede predecir la generación de energía de un campo de paneles solares según el pronóstico.
+
 ## Datos
 
 Los datos utilizados durante el proyecto están almacenados y disponibles de manera pública por el Centro de investigación para el clima y la resiliencia (CR2) en el caso de los datos atmosféricos y de temperatura, y en datos.gob.cl para el caso del los datos de contaminación atmosférica pertenecientes al SINCA (MMA) , mientras que la etiqueta del modelo se obtiene mediante 'scrapping' del reporte diario de la situación de alerta ambiental en la página del Ministerio de medio ambiente (http://airesantiago.gob.cl/balance-1997-2017/calidad-del-aire/).
+
+Esto último se logro con los 2 siguientes bloques de código en python. Primero un descargador que realiza la descarga automatica de todos los pdf con la informacion de calidad del aire. Uno por cada dia que se registro esta desde el 2015 (approx. 700)
+```{python}
+import ssl
+from urllib.error import HTTPError
+import requests
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+
+ssl._create_default_https_context = ssl._create_unverified_context
+
+for i in range(5, 10): # Para cada año que contiene registro
+    driver = webdriver.Chrome('/Users/juanpablosuazo/yo/pega/whitestack/tutorials-master/libraries/chromedriver') # se crea el driver que recorrerá la página
+
+    driver.get("http://airesantiago.gob.cl/consolidados-de-calidad-del-aire-ano-201" + str(i) + "/") # se ingresa al directorio que contiene los links a cada pdf
+    actions = ActionChains(driver)
+
+    reportes = driver.find_elements_by_partial_link_text('Pron') #se encuentran todos loselementos con links a pdf (todos comienzan con Pron)
+    urls = []
+
+    for rep in reportes:
+        urls.append(rep.get_attribute('href')) #se extraen los link de descarga
+
+    driver.close() # se cierra el driver
+
+    for url in urls: # por cada link de descarga
+        try:
+            urlName = str(url).split('/')
+            urlN = urlName[len(urlName) - 1] #del lmk de descarga se extrae el nombre del archivo
+
+            r = requests.get(url) # se consigue el pdf
+
+            with open('/Users/juanpablosuazo/UChile/semestre10/mineriaDeDatos/hitos/hito2/reportes/201' + str(
+                    i) + '/' + urlN, "wb") as code:
+                code.write(r.content) # se descarga el pdf
+
+        except HTTPError:
+            print(url) # si se produce error con algún link, se atrapa y se imprime el link problemático
+
+```
+Luego, con un parser, se extrae la info relevante de los pdf (día y calidad del aire asociado) y se escriben en un arhivo csv
+```{python}
+import os
+import csv
+import slate3k as slate
+import sys
+
+with open('/Users/juanpablosuazo/UChile/semestre10/mineriaDeDatos/hitos/hito2/reportes-cvs/pred.csv', 'w') as csvfile:
+    filewriter = csv.writer(csvfile, delimiter=',') # se abre el csv a escribir
+
+    for i in range(5, 10): #para cada directorio (1 por año)
+        for filename in os.listdir('/Users/juanpablosuazo/UChile/semestre10/mineriaDeDatos/hitos/hito2/reportes/201' + str(i)): # se listan los archivos en el directorio
+            if filename.endswith(".pdf"): # si son pdf
+                try:
+                    with open('/Users/juanpablosuazo/UChile/semestre10/mineriaDeDatos/hitos/hito2/reportes/201' + str(i) + '/' + filename, 'rb') as f: # se abre el pdf para leer
+                        extracted_text = slate.PDF(f) # se extrae el texto del pdf
+                    
+                    # se aprovecha formato similar de los pdf para usar palabras clave y diversas 
+                    # herramientas de manejo de strings para obtener la calidad del aire para tal día
+                    prediccion = str(extracted_text).replace("\\n", ' ').split('CALIDAD DEL AIRE PREVISTA PARA MAÑANA')
+                    pred = prediccion[1].split('*')[0].split('CONDICIÓN')[0] # acá encontramos la predicción acera de la calidad del aire
+                    fecha = filename.split('.')[0].replace('Pronostico', '') # del nombre del archivo se extrae la fecha
+
+                    if fecha[0] == 'D':
+                        fecha = fecha[22:]
+                    if pred[4] == ' ':
+                        pr = pred[5:].replace('  ', ' ').replace('  ', ' ').replace('  ', ' ')
+                        filewriter.writerow([fecha, pr]) # se escribe la info en el csv
+                    else:
+                        pr = pred[4:].replace('  ', ' ').replace('  ', ' ').replace('  ', ' ')
+                        filewriter.writerow([fecha, pr])
+                except:
+                    print(filename + ' ' + str(sys.exc_info()[0])) # si hay errores al abrir un pdf, se atrapa y se indica cual fue el pdf que fallo (ya sea por ftener distinto formato, estar corrupto, etc.)
+```
+
+De todas maneras se hace necesario usar excel para realizar una pequeña limpieza de los datos y así tener un formato consistente con el ya usado.
 
 ### Catacterización de los datos
 Los datos están compuestos por fecha, valor de las distintas mediciones y la categorización del estado del aire; la fecha se encuentre en el formato AAAA-MM-DD como también en columnas separadas; las distintas medidas se encuentran en valores numéricos y la categorización se encuentra en formato de texto.
@@ -70,6 +161,12 @@ Los datos están compuestos por fecha, valor de las distintas mediciones y la ca
 head(tabla, n= 3L)
 ```
 
+#### Correlacion de los datos
+```{r}
+tabla.cor <- cor(subset(tabla, select = -c(cat_mp10,cat_mp25,Fecha,anno,dia,MP25,NO2)), use = "pairwise.complete.obs" )
+corrplot.mixed( tabla.cor )
+```
+Se encuentran correlaciones entre O3 y MP10 y la temperatura máxima del día; además de una correlación entre MP10, CO y SO2; una correlación esperada es la negativa existente entre precipitaciones y MP10; precipitaciones y Tmax.
 
 A continuación se muestra la curva ROC para un modelo de regrasión multinomial sobre dos subset de relación 70-30.
 ```{r}
@@ -117,13 +214,6 @@ na_verify = sapply(tabla, function(y) sum(length(which(is.na(y)))))
 na_verify <- data.frame(na_verify)
 na_verify
 ```
-
-#### Correlacion de los datos
-```{r}
-tabla.cor <- cor(subset(tabla, select = -c(cat_mp10,cat_mp25,Fecha,anno,dia,MP25,NO2)), use = "pairwise.complete.obs" )
-corrplot.mixed( tabla.cor )
-```
-Se encuentran correlaciones entre O3 y MP10 y la temperatura máxima del día; además de una correlación entre MP10, CO y SO2; una correlación esperada es la negativa existente entre precipitaciones y MP10; precipitaciones y Tmax.
 
 ### Balanceo de las clases
 
