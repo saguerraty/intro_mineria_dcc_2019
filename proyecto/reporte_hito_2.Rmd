@@ -120,7 +120,7 @@ na_verify
 
 #### Correlacion de los datos
 ```{r}
-tabla.cor <- cor(subset(tabla, select = -c(cat_mp10,cat_mp25,Fecha,anno,dia,MP25,NO2)), use = "pairwise.complete.obs" )
+tabla.cor <- cor(subset(tabla, select = -c(cat_mp10,cat_mp25,Fecha,anno,dia)), use = "pairwise.complete.obs" )
 corrplot.mixed( tabla.cor )
 ```
 Se encuentran correlaciones entre O3 y MP10 y la temperatura máxima del día; además de una correlación entre MP10, CO y SO2; una correlación esperada es la negativa existente entre precipitaciones y MP10; precipitaciones y Tmax.
