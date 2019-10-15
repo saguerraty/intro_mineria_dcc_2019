@@ -10,7 +10,7 @@ tabla_imbalanced = pd.read_csv("./tabla_imbalanced.csv").drop(columns=['Fecha'])
 # %%
 tabla_imbalanced.dtypes
 
-#%% 
+#%%  
 tabla_imbalanced.isna().sum()
 
 # %%
