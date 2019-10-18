@@ -1,0 +1,118 @@
+---
+title: "Laboratorio 3.1 - Clustering en R"
+author: "** MODIFICAR AQUí, INDICANDO NOMBRE DE LOS INTEGRANTES **"
+date: "Octubre 2019"
+output: 
+  html_document: 
+    theme: default
+    toc: yes
+---
+
+
+# Instrucciones
+
+1. Trabaje en equipos de dos personas. Salvo excepciones, no se corregirá entregas con menos de dos integrantes.
+
+2. Modifique este archivo `.Rmd` agregando sus respuestas donde corresponda.
+
+3. Para cada pregunta, cuando corresponda, **incluya el código fuente que utilizó para llegar a su respuesta**.
+
+4. Al final de la clase, **genere un archivo HTML usando RStudio** y súbalo a U-Cursos.
+   Basta con que uno de los integrantes haga la entrega. Si ambos hacen una entrega en U-Cursos, se revisará cualquiera de éstas.
+
+# Laboratorio
+
+Para este laboratorio usaremos el dataset de cantidad de denuncias por 100 mil habitantes por tipo de delito desde el año 2001 al 2016 en Chile (Fuente: http://www.seguridadpublica.gov.cl/estadisticas/tasa-de-denuncias-y-detenciones/delitos-de-mayor-connotacion-social-series-de-datos-2001-2017/). 
+
+Cargue el siguiente dataset:
+
+```{r}
+data <- read.table('https://users.dcc.uchile.cl/~hsarmien/mineria/datasets/denuncias-2001-2016.txt')
+```
+
+
+```{r paquetes}
+library(knitr)
+library(ggplot2)
+```
+
+Utilizaremos sólo los datos del 2005. Ejecute las siguientes líneas de código para filtrar los datos:
+
+```{r, eval=T, results=F}
+anio <- 2005
+x <- data[data$anio == anio, ]
+rownames(x) <- x$comuna
+x <- x[, c(-1, -2)]
+head(x)
+```
+
+
+## Parte 1: Exploración de datos
+
+**1.1.** Descripción de los datos: explique brevemente qué representa cada instancia (fila) y atributo (columna) y estime el número de observaciones que hay en el dataset.
+
+```{r}
+
+```
+
+**1.2.** Genere un boxplot a partir de los datos y describa tres características de estos basándose en el gráfico. Por ejemplo, explicar sobre la mediana de los datos, distribución de los datos, entre otros.
+
+```{r}
+```
+
+
+## Parte 2: K-means
+
+**2.1.** Describa qué es lo que hace cada línea del código adjunto. ¿Varían los resultados para diferentes ejecuciones? Si su respuesta es sí, ¿por qué?
+
+```{r eval=F}
+km.out <- kmeans(x, 3, nstart = 5)
+km.out$centers
+```
+
+**Respuesta:**
+En el código sin modificar no está fijada la semilla para componentes aleatorias del código, por lo que el kernel de R va a usar la semilla por default la que es suceptible a cambios en el tiempo. Dado que la componente aleatoria va a cambiar y que el inicio del algoritmo de K-means tiene una componente aleatoria, el resultado de clustering va a ser distinto en cada vez que se ejecute la linea, en particular ya que K-means es un algoritmo sensible al punto de inicio y que el número de inicios que se está considerando (nstart = 5) es un número bajo, lo que en sí va a dar un resultado poco estable en la asignación de clusters.
+
+
+**2.2.** ¿Cómo podría evitar los resultados variables de `K-means`?
+
+**Respuesta:**
+Hay dos cambios que se deberían hacer tanto para mejorar el resultado como para hacerlo replicable, estos son aumentar el número de Nstart (el número por default es 100) y fijar la semilla aleatoria para este script de R con set.seed(%algún número%)
+
+**2.3.** ¿Cómo podría encontrar *outliers* en los datos usando `K-means`? Describa su propuesta y muestre un par de ejemplos con distintos números de clusters.
+
+
+**Respuesta:**
+No alcanzo a programar este aproach pero una manera (aunque poco eficiente) es: 
+1- Encontrar una configuración estable de k-means y guardarla
+2- definier un umbral de distancia
+3- Correr K-means y guardar la posición de los centoides de la configuración guardada en 1
+4- Crear un df temporal con la fila i faltante
+5- Correr K-means con el df temporal
+6- si la ubicación de los centroides cambia por un valor (utilizando algúna norma definida previamente) mayor al umbral definido, apgregar un flag de outlier a esa fila
+7- volver a el paso 4 para los siguientes i del df
+8- si i == Nrow() break
+Los outlier son los que tienen el flag
+```{r eval=F}
+
+```
+
+## Parte 3: Clustering Jerárquico Aglomerativo
+
+**3.1** Usando el dataframe `x`, ejecute cada uno de los 3 métodos de clustering jerárquico: `complete`, `single` y `average`, y visualice los dendrogramas formados. Adjunte código necesario.
+```{r}
+```
+
+**3.2.** Indique dónde haría los cortes en cada método (complete, single, average) basado en un número K de clusters. Para visualizar los cortes complete el siguiente código para cada método y el K elegido en cada caso.
+```{r}
+#metodo = ...
+#K = ...
+#plot(metodo)
+#rect.hclust(metodo, k = K, border = 2:5)
+```
+
+**3.3.** ¿Cómo sería posible encontrar *outliers* en los datos usando clustering jerárquico? Basta con que comente su respuesta.
+
+
+**3.4.** Describa una ventaja y una desventaja de emplear cada uno de los métodos de clustering vistos en este laboratorio (k-means y jerárquico aglomerativo).
+
