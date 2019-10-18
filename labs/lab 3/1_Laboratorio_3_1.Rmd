@@ -1,6 +1,6 @@
 ---
 title: "Laboratorio 3.1 - Clustering en R"
-author: "** MODIFICAR AQUí, INDICANDO NOMBRE DE LOS INTEGRANTES **"
+author: "Sebastián Guerrati      Bastián Inostroza"
 date: "Octubre 2019"
 output: 
   html_document: 
@@ -123,11 +123,29 @@ plot(hc.average, main="Average", xlab="", ylab="", cex=.9)
 ```
 
 **3.2.** Indique dónde haría los cortes en cada método (complete, single, average) basado en un número K de clusters. Para visualizar los cortes complete el siguiente código para cada método y el K elegido en cada caso.
-```{r}
-#metodo = ...
-#K = ...
-#plot(metodo)
-#rect.hclust(metodo, k = K, border = 2:5)
+```{r fig.width=12}
+#install.packages("factoextra")
+library("factoextra")
+
+
+# Complete
+
+fviz_nbclust(x, FUN = hcut, method = "silhouette")
+fviz_nbclust(x, FUN = hcut, method = "wss")
+
+
+metodo = hc.complete
+K = 5
+plot(metodo)
+rect.hclust(metodo, k = K, border = 2:5)
+
+metodo = hc.average
+plot(metodo)
+rect.hclust(metodo, k = K, border = 2:5)
+
+metodo = hc.single
+plot(metodo)
+rect.hclust(metodo, k = K, border = 2:5)
 ```
 
 **3.3.** ¿Cómo sería posible encontrar *outliers* en los datos usando clustering jerárquico? Basta con que comente su respuesta.
