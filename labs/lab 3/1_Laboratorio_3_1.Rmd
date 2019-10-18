@@ -111,7 +111,15 @@ Los outlier son los que tienen el flag
 ## Parte 3: Clustering Jerárquico Aglomerativo
 
 **3.1** Usando el dataframe `x`, ejecute cada uno de los 3 métodos de clustering jerárquico: `complete`, `single` y `average`, y visualice los dendrogramas formados. Adjunte código necesario.
-```{r}
+```{r fig.width=12}
+hc.complete <- hclust(dist(x), method = "complete")
+hc.single <- hclust(dist(x), method = "single")
+hc.average <- hclust(dist(x), method = "average")
+
+par(mfrow=c(1,3))
+plot(hc.complete, main="Complete", xlab="", ylab="", cex=.9)
+plot(hc.single, main="Single", xlab="", ylab="", cex=.9)
+plot(hc.average, main="Average", xlab="", ylab="", cex=.9)
 ```
 
 **3.2.** Indique dónde haría los cortes en cada método (complete, single, average) basado en un número K de clusters. Para visualizar los cortes complete el siguiente código para cada método y el K elegido en cada caso.
