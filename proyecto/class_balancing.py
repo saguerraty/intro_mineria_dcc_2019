@@ -28,4 +28,7 @@ X_res, y_res = smotenc.fit_resample(X, y)
 print(f'Resampled dataset samples per class{Counter(y_res)}')
 
 
+#%%[markdown]
+Esta es una celda de markdown
+
 #%%
