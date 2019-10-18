@@ -51,13 +51,24 @@ head(x)
 
 **1.1.** Descripción de los datos: explique brevemente qué representa cada instancia (fila) y atributo (columna) y estime el número de observaciones que hay en el dataset.
 
+R: 
+- Cada fila representa la cantidad de denuncias por cada 100k habidantes para cada tipo de delito en una comuna y año en particular.
+- Cada columna (excepto la de comuna y la de año) representa la cantidad de denuncias por 100 mil habitantes por tipo de delito. Las filas de comuna y año representan la comuna y año en que dichas denuncias fueron realizadas respectivamente.
+- El numero de observaciones (denuncias cada 100k habitantes) es 38752
 ```{r}
-
+dim(data)
+5536*7
 ```
 
 **1.2.** Genere un boxplot a partir de los datos y describa tres características de estos basándose en el gráfico. Por ejemplo, explicar sobre la mediana de los datos, distribución de los datos, entre otros.
 
-```{r}
+```{r fig.width=12}
+
+anio <- 2005
+y <- data[data$anio == anio, ]
+y <- y[, c(-1,-2)]
+
+boxplot(y)
 ```
 
 
