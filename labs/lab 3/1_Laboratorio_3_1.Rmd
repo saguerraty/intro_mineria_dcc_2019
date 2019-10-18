@@ -131,7 +131,17 @@ plot(hc.average, main="Average", xlab="", ylab="", cex=.9)
 ```
 
 **3.3.** ¿Cómo sería posible encontrar *outliers* en los datos usando clustering jerárquico? Basta con que comente su respuesta.
-
+Una forma de encontrar outlier es definir una número mínimo de puntos que debiesen haber en un cluster para ser considerados un conjunto aislado, luego configuro mi dendograma y calculo en número ideal de cluster utilizando algún metodo como el del codo o gapstatistic e itero:
+1- definir k=2 y revisar si esque algún cluster tiene menos puntos que el número umbral.
+2- Si el cluster tiene menos que el umbral etiqueto esos puntos como outlier
+3- Aumento mi K++
+4- Mi K es igual al K óptimo? Si es break:
+5- volver al paso 2
+6-repetir esta metodología con distintas métricas para ver que puntos se repiten con la etiqueta de outliers, los que se repiten son outlier.
 
 **3.4.** Describa una ventaja y una desventaja de emplear cada uno de los métodos de clustering vistos en este laboratorio (k-means y jerárquico aglomerativo).
+
+**Respuesta:** 
+Una ventaja de emplear HC es que puedo tener información de diferencias entre los puntos dentro de un cluster y además se tiene información de la distancia de los clusters entre sí, donde mientras más arriba en la jerarquía esté el vínculo entre clusters, menos relación tiene un cluster con otro. La desventaja de HC es que es sensible a la métrica que se esté usando, por lo que se podría cometer un error al o selecionar la adecuada. 
+La ventaja de K-means es que es escalable (con buen rendimiento) a datasets grandes, además es un método que tiene una traducción directa a visualización lo que hace que la interpretación sea más fácil. La desventaja de K-means es que depende de una componente aleatoria con lo que si no está configurado apropiadamente y uno tiene "mala suerte" podría tener una mala clusterización con poca info agregada, o info de mala calidad.
 
